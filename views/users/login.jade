@@ -1,0 +1,10 @@
+extends ../layout
+
+block append content
+    div.col-md-4
+    div.col-md-4
+        form(method='post')
+            input(type='email', name='email', class='form-control', placeholder='E-mail')
+            input(type='password', name='password', class='form-control', placeholder='Password')
+            input(type='submit', class='btn btn-default')
+    div.col-md-4

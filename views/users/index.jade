@@ -1,0 +1,10 @@
+extends ../layout
+
+block append content
+    if (locals.user)
+        h1 You're logged in. Your credentials:
+        ul
+            li Firstname: #{user.firstname}
+            li Lastname: #{user.lastname}
+            li Email: #{user.email}
+
