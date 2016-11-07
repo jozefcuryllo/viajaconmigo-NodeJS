@@ -2,9 +2,6 @@
   "name": "viajaconmigo-NodeJS",
   "version": "0.0.0",
   "private": true,
-  "scripts": {
-    "start": "node app.js"
-  },
   "dependencies": {
     "body-parser": "~1.15.1",
     "connect-flash": "^0.1.1",
