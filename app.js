@@ -11,7 +11,7 @@ var Strategy = require('passport-local').Strategy;
 
 
 // Connection URL
-var url = 'mongodb://localhost:27017/viajaconmigo';
+var url = 'mongodb://jcuryllo:qwerty@ds147167.mlab.com:47167/ulpgcasw';
 var mongoose = require('mongoose');
 mongoose.connect(url);
 

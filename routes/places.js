@@ -15,4 +15,27 @@ router.get('/', function(req, res){
 
 });
 
+router.get('/add', function(req, res){
+
+        res.render('places/add');
+
+});
+
+router.post('/add', function(req, res){
+    var myPlace = new Place({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        password: req.body.password,
+        email: req.body.email
+    });
+
+    myUser.save(function (err) {
+        if (!err)
+            res.redirect('places/index');
+    });
+
+
+
+});
+
 module.exports = router;
