@@ -1,8 +1,10 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var multer = require('multer');
 var router = express.Router();
 var Place = require('mongoose').model('Place');
 
+var upload = multer({ dest: './uploads/' });
 
 router.get('/', function(req, res){
         Place.find(function (err, places) {
@@ -38,4 +40,5 @@ router.post('/add', upload.array('photos', 12), function(req, res){
 
 });
 
+module.exports = upload;
 module.exports = router;
