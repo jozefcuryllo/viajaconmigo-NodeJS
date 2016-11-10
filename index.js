@@ -16,7 +16,7 @@ var mongoose = require('mongoose');
 mongoose.connect(url);
 
 var app = express();
-
+var port = process.env.PORT || 8080;
 
 var userSchema = mongoose.Schema({
     firstname: String,
