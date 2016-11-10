@@ -16,7 +16,8 @@ var mongoose = require('mongoose');
 mongoose.connect(url);
 
 var app = express();
-
+var port = process.env.PORT || 3000;
+app.listen(port);
 
 var userSchema = mongoose.Schema({
     firstname: String,
@@ -142,8 +143,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
-var port = process.env.PORT || 3000;
-app.listen(port);
+
 
 module.exports = mongoose;
 module.exports = app;
