@@ -16,7 +16,7 @@ var mongoose = require('mongoose');
 mongoose.connect(url);
 
 var app = express();
-var port = process.env.PORT || 8080;
+
 
 var userSchema = mongoose.Schema({
     firstname: String,
@@ -141,6 +141,9 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+var port = process.env.PORT || 3000;
+app.listen(port);
 
 module.exports = mongoose;
 module.exports = app;
