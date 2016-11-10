@@ -36,8 +36,15 @@ var placeSchema = mongoose.Schema({
     longitude: Number
 });
 
+var imageSchema = mongoose.Schema({
+    path: String,
+    created: Date,
+    placeId: String
+});
+
 var User = mongoose.model('User', userSchema);
 var Place = mongoose.model('Place', placeSchema);
+var Image = mongoose.model('Image', imageSchema);
 
 app.use(session({secret: 'keyboard cat', cookie: {maxAge: 60000}}));
 app.use(passport.initialize());

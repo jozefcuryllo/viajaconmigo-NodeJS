@@ -3,8 +3,9 @@ var mongoose = require('mongoose');
 var multer = require('multer');
 var router = express.Router();
 var Place = require('mongoose').model('Place');
+var Image = require('mongoose').model('Image');
 
-var upload = multer({ dest: './uploads/' });
+var upload = multer({ dest: 'uploads/' });
 
 router.get('/', function(req, res){
         Place.find(function (err, places) {
@@ -31,9 +32,24 @@ router.post('/add', upload.array('photos', 12), function(req, res){
         email: req.body.email
     });
 
-    myPlace.save(function (err) {
-        if (!err)
-            res.redirect('places/index');
+
+
+    myPlace.save(function (err, place) {
+        if (!err) {
+
+            req.files.photos.forEach(function (photo) {
+                var image = new Image({
+                    path: photo.originalname,
+                    created: new Date(),
+                    placeId: place._id
+                });
+
+                image.save();
+
+            });
+
+            res.redirect('/places/index');
+        }
     });
 
 
