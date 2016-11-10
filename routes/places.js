@@ -21,7 +21,7 @@ router.get('/add', function(req, res){
 
 });
 
-router.post('/add', function(req, res){
+router.post('/add', upload.array('photos', 12), function(req, res){
     var myPlace = new Place({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
@@ -29,7 +29,7 @@ router.post('/add', function(req, res){
         email: req.body.email
     });
 
-    myUser.save(function (err) {
+    myPlace.save(function (err) {
         if (!err)
             res.redirect('places/index');
     });

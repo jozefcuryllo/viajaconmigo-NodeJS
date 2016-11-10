@@ -8,12 +8,14 @@ var session = require('express-session');
 var flash = require('connect-flash');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
-
+var multer = require('multer');
 
 // Connection URL
 var url = 'mongodb://jcuryllo:qwerty@ds147167.mlab.com:47167/ulpgcasw';
 var mongoose = require('mongoose');
 mongoose.connect(url);
+
+var upload = multer({ dest: './uploads/' });
 
 var app = express();
 var port = process.env.PORT || 3000;
@@ -144,6 +146,6 @@ app.use(function(err, req, res, next) {
 });
 
 
-
+module.exports = upload;
 module.exports = mongoose;
 module.exports = app;
