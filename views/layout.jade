@@ -1,91 +1,91 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js',integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=",   crossorigin='anonymous')
-    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa', crossorigin='anonymous')
-    link(rel='stylesheet', href='/stylesheets/style.css')
-      link(rel='stylesheet', href='/public/font-awesome/css/font-awesome.min.css')
-      link(href='https://fonts.googleapis.com/css?family=Alegreya+Sans+SC', rel='stylesheet')
-      block css
-  body
-      #bmenu.navbar.navbar-default(role='navigation')
-          .container-fluid
-              .navbar-header
-                  a.navbar-brand(href='/') ViajaConmigo
-                  button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-menubuilder')
-                      span.sr-only Toggle navigation
-                      span.icon-bar
-                      span.icon-bar
-                      span.icon-bar
-              if(!login)
-                  .collapse.navbar-collapse.navbar-menubuilder
-                      ul.nav.navbar-nav.navbar-right
-                          li
-                              a(href='/users/login') Login
-                          li
-                              a(href='/users/register') Register
-                                  // /.navbar-collapse
-              else
-                  .collapse.navbar-collapse.navbar-menubuilder
-                      ul.nav.navbar-nav.navbar-right
-                          li.dropdown
-                              a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
-                                  | Places
-                                  span.caret
-                              ul.dropdown-menu
-                                  li
-                                      a(href='/places') List
-                                      a(href='/places/add') Add new
-                          li
-                              a(href='/users/logout') Logout
+    head
+        title= title
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js',integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=",   crossorigin='anonymous')
+        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa', crossorigin='anonymous')
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        link(rel='stylesheet', href='/public/font-awesome/css/font-awesome.min.css')
+        link(href='https://fonts.googleapis.com/css?family=Alegreya+Sans+SC', rel='stylesheet')
+        block css
+    body
+        #bmenu.navbar.navbar-default(role='navigation')
+            .container-fluid
+                .navbar-header
+                    a.navbar-brand(href='/') ViajaConmigo
+                    button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-menubuilder')
+                        span.sr-only Toggle navigation
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                if(!login)
+                    .collapse.navbar-collapse.navbar-menubuilder
+                        ul.nav.navbar-nav.navbar-right
+                            li
+                                a(href='/users/login') Login
+                            li
+                                a(href='/users/register') Register
+                                    // /.navbar-collapse
+                else
+                    .collapse.navbar-collapse.navbar-menubuilder
+                        ul.nav.navbar-nav.navbar-right
+                            li.dropdown
+                                a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
+                                    | Places
+                                    span.caret
+                                ul.dropdown-menu
+                                    li
+                                        a(href='/places') List
+                                        a(href='/places/add') Add new
+                            li
+                                a(href='/users/logout') Logout
 
-      block before_content
+        block before_content
 
-      #content.container
-          if(message && message.length > 0 && success)
-              br
-              .alert.alert-success= message
-          if(message && message.length > 0 && !success)
-              br
-              .alert.alert-danger= message
-          block content
+        #content.container
+            if(message && message.length > 0 && success)
+                br
+                .alert.alert-success= message
+            if(message && message.length > 0 && !success)
+                br
+                .alert.alert-danger= message
+            block content
 
-      block after_content
+        block after_content
 
-      footer.col-xs-12.container
-          .col-md-4
-              h2 See also
-              ul
-                  li
-                      a(href='#') One document
-                  li
-                      a(href='#') Second document
-                  li
-                      a(href='#') One document
-                  li
-                      a(href='#') Second document
+        footer.col-xs-12.container
+            .col-md-4
+                h2 See also
+                ul
+                    li
+                        a(href='#') One document
+                    li
+                        a(href='#') Second document
+                    li
+                        a(href='#') One document
+                    li
+                        a(href='#') Second document
 
-          .col-md-4
-              h2 See also
-              ul
-                  li
-                      a(href='#') One document
-                  li
-                      a(href='#') Second document
-                  li
-                      a(href='#') One document
-                  li
-                      a(href='#') Second document
-          .col-md-4
-              h2 Contact
-              p(style='white-space:pre;')
-                  | Awesome company
-                  | New York
-                  | 21st Avenue 4
-                  | 0048 555 555 333
-          .col-md-12
-              p.small.pull-right Copyright &copy; 2016 by Awesome Company
+            .col-md-4
+                h2 See also
+                ul
+                    li
+                        a(href='#') One document
+                    li
+                        a(href='#') Second document
+                    li
+                        a(href='#') One document
+                    li
+                        a(href='#') Second document
+            .col-md-4
+                h2 Contact
+                p(style='white-space:pre;')
+                    | Awesome company
+                    | New York
+                    | 21st Avenue 4
+                    | 0048 555 555 333
+            .col-md-12
+                p.small.pull-right Copyright &copy; 2016 by Awesome Company
 
-      block javascript
+        block javascript
