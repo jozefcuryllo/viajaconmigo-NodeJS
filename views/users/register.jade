@@ -1,14 +1,39 @@
 extends ../layout
 
 block append content
-    div.col-md-4
-    div.col-md-4
-        form(method='post')
-            input(type='text', name='firstname', class='form-control', placeholder='First name')
-            input(type='text', name='lastname', class='form-control', placeholder='Last name')
-            input(type='text', name='city', class='form-control', placeholder='City')
-            input(type='email', name='email', class='form-control', placeholder='E-mail')
-            input(type='password', name='password', class='form-control', placeholder='Password')
-            input(type='password', name='repassword', class='form-control', placeholder='Re-type password')
-            input(type='submit', class='btn btn-default')
-    div.col-md-4
+    br
+    br
+    .col-md-12
+        .panel.panel-default
+            .panel-heading Register
+            .panel-body
+                form.form-horizontal(role='form', method='POST')
+                    .form-group
+                        label.col-md-4.control-label(for='firstname') Firstname
+                        .col-md-6
+                            input(type='text', name='firstname',id='firstname' class='form-control', placeholder='First name')
+                    .form-group
+                        label.col-md-4.control-label(for='lastname') Lastname
+                        .col-md-6
+                            input(type='text', name='lastname',id='lastname' class='form-control', placeholder='First name')
+                    .form-group
+                        label.col-md-4.control-label(for='city') City
+                        .col-md-6
+                            input(type='text', name='city',id='city' class='form-control', placeholder='City')
+                    .form-group
+                        label.col-md-4.control-label(for='email') Email
+                        .col-md-6
+                            input(type='email', name='email',id='email' class='form-control', placeholder='Email')
+
+                    .form-group
+                        label.col-md-4.control-label(for='password') Password
+                        .col-md-6
+                            input.form-control(type='password', name='password', id='password', placeholder='Password')
+                    .form-group
+                        label.col-md-4.control-label(for='repassword') Re-type password
+                        .col-md-6
+                            input.form-control(type='password', name='repassword', id='repassword', placeholder='Re-type password')
+                    .form-group
+                        .col-md-6.col-md-offset-4
+                            button.btn.btn-primary(type='submit')
+                                | Register

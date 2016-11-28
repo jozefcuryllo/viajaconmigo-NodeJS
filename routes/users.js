@@ -27,15 +27,39 @@ router.post('/register',
 
 router.get('/login',
     function (req, res) {
-        res.render('users/login');
+        res.render('users/login', {message: req.flash('error')});
     });
 
-router.post('/login',
-    passport.authenticate('local', {failureRedirect: '/users/login', successRedirect: '/', failureFlash: true}),
-    function (req, res) {
+// router.post('/login',
+//     passport.authenticate('local', {
+//         failureRedirect: '/users/login',
+//         successRedirect: '/',
+//         badRequestMessage : 'Missing email or password.',
+//         failureFlash: true
+//     }),
+//     function (req, res) {
+//
+//         res.redirect('/');
+//     });
 
-        res.redirect('/');
-    });
+router.post('/login', function (req, res, next) {
+    passport.authenticate('local', function (err, user, info) {
+        if (err) {
+            return next(err); // will generate a 500 error
+        }
+        // Generate a JSON response reflecting authentication status
+        if (!user) {
+            return res.render('users/login', {success: false, message: 'Authentication failed'});
+        }
+        req.login(user, function (err) {
+            if (err) {
+                return next(err);
+            }
+            return res.redirect('/places');
+        });
+    })(req, res, next);
+});
+
 
 router.get('/logout',
     function (req, res) {

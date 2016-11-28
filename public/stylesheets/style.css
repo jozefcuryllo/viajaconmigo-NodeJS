@@ -19,32 +19,32 @@ body {
 #bmenu.navbar-default .navbar-nav > li > a:hover,
 #bmenu.navbar-default .navbar-nav > li > a:focus {
     color: rgba(0, 26, 173, 1);
-    background-color: rgba(219, 198, 76, 1);
+    background-color: #95a4de;
 }
 
 #bmenu.navbar-default .navbar-nav > .active > a,
 #bmenu.navbar-default .navbar-nav > .active > a:hover,
 #bmenu.navbar-default .navbar-nav > .active > a:focus {
     color: rgba(0, 26, 173, 1);
-    background-color: rgba(219, 198, 76, 1);
+    background-color: #95a4de;
 }
 
 #bmenu.navbar-default .navbar-toggle {
-    border-color: #dbc64c;
+    border-color: #95a4de;
 }
 
 #bmenu.navbar-default .navbar-toggle:hover,
 #bmenu.navbar-default .navbar-toggle:focus {
-    background-color: #dbc64c;
+    background-color: #95a4de;
 }
 
 #bmenu.navbar-default .navbar-toggle .icon-bar {
-    background-color: #dbc64c;
+    background-color: #95a4de;
 }
 
 #bmenu.navbar-default .navbar-toggle:hover .icon-bar,
 #bmenu.navbar-default .navbar-toggle:focus .icon-bar {
-    background-color: #5367b5;
+    background-color: #fff;
 }
 
 .navbar {
@@ -64,7 +64,7 @@ body {
 
 #content {
     min-height: 100%;
-    margin-bottom: 150px;
+    /*margin-bottom: 150px; */
 
 }
 
@@ -73,11 +73,70 @@ body {
     display: block;
 }
 
-footer, #content:after {
-    height: 150px;
+footer /* #content:after */
+{
+    height: 100%;
 }
 
 footer {
     background-color: rgba(31, 49, 119, 1);
     color: #bbb;
+}
+
+.hei {
+    height: 300px;
+    overflow: hidden;
+}
+
+.pgl {
+    height: 130px;
+    overflow: hidden;
+}
+
+hr {
+    border-top: 1px solid #ddd;
+}
+
+footer ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-family: 'Alegreya Sans SC', sans-serif;
+    font-weight: 400;
+    text-shadow: none;
+    text-transform: uppercase;
+}
+
+h2 {
+    font-family: 'Alegreya Sans SC', sans-serif;
+    font-weight: 400;
+    text-shadow: none;
+    text-transform: uppercase;
+}
+
+.panel-default > .panel-heading {
+    color: #fff;
+    background-color: #95a4de;
+    border-color: #fbfbfb;
+}
+
+.panel-heading {
+    border-radius: 0;
+}
+
+.btn {
+    border-radius: 0;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #95a4de;
+    border-color: #95a4de;
+}
+
+a {
+    color: #95a4de;
 }

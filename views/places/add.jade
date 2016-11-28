@@ -7,13 +7,30 @@ block append content
 
     h2.page-header Write details
 
-    form(method='post', enctype='multipart/form-data')
-        input(type='text', name='name', class='form-control', placeholder='Name')
-        input(type='text', name='description', class='form-control', placeholder='Description')
-        input(type='text', name='longitude', class='form-control', value='19')
-        input(type='text', name='latitude', class='form-control', value='21')
-        input(type='file', name='photos', class='form-control', multiple)
-        input(type='submit', class='btn btn-default')
+    .col-md-12
+        .panel.panel-default
+            .panel-heading Add new place
+            .panel-body
+                form.form-horizontal(role='form', method='POST', enctype='multipart/form-data')
+                    .form-group
+                        label.col-md-4.control-label(for='name') Name
+                        .col-md-6
+                            input.form-control(type='text', name='name', id='name', value='', required='', autofocus='', placeholder='Name')
+                    .form-group
+                        label.col-md-4.control-label(for='description') Description
+                        .col-md-6
+                            input.form-control(type='text', name='description', id='description', placeholder='Description')
+                    input(type='hidden', name='longitude', class='form-control', value='19')
+                    input(type='hidden', name='latitude', class='form-control', value='21')
+                    .form-group
+                        label.col-md-4.control-label(for='photos') Pictures
+                        .col-md-6
+                            input.form-control(type='file', name='photos', id='photos', multiple)
+                    .form-group
+                        .col-md-6.col-md-offset-4
+                            button.btn.btn-primary(type='submit')
+                                | Save
+
 
 
 block append javascript

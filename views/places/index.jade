@@ -11,6 +11,56 @@ block append before_content
                         img.sp-image(src='/uploads/#{image.filename}')
                         p.sp-layer.sp-black.sp-padding(data-width='100%',data-position='bottomLeft')= place.name
 
+block append content
+    h1.page-header Find interesting place to see!
+    .col-md-6
+        p.text-justify Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis sem ullamcorper, sollicitudin neque vitae, accumsan est. Nam venenatis velit ipsum, sed fringilla lectus ultricies a. Etiam tincidunt cursus purus posuere facilisis. Aenean tincidunt gravida urna eu tempor. Nulla facilisi. Integer laoreet dolor et augue iaculis ultrices. Curabitur sed ex nec tortor tempus lacinia. Donec auctor a justo fringilla sollicitudin. Donec condimentum metus purus, vel aliquet nulla egestas eu. Vestibulum ac commodo dolor. Vestibulum a arcu purus. Morbi fringilla, mi vel cursus commodo, ex felis vestibulum mi, vitae feugiat magna nisi sit amet nisi. In sem dui, consectetur et pellentesque non, volutpat vitae mi.
+
+        p.text-justify Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis sem ullamcorper, sollicitudin neque vitae, accumsan est. Nam venenatis velit ipsum, sed fringilla lectus ultricies a. Etiam tincidunt cursus purus posuere facilisis. Aenean tincidunt gravida urna eu tempor. Nulla facilisi. Integer laoreet dolor et augue iaculis ultrices. Curabitur sed ex nec tortor tempus lacinia. Donec auctor a justo fringilla sollicitudin. Donec condimentum metus purus, vel aliquet nulla egestas eu. Vestibulum ac commodo dolor. Vestibulum a arcu purus. Morbi fringilla, mi vel cursus commodo, ex felis vestibulum mi, vitae feugiat magna nisi sit amet nisi. In sem dui, consectetur et pellentesque non, volutpat vitae mi.
+
+        p.text-justify Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis sem ullamcorper, sollicitudin neque vitae, accumsan est. Nam venenatis velit ipsum, sed fringilla lectus ultricies a. Etiam tincidunt cursus purus posuere facilisis. Aenean tincidunt gravida urna eu tempor. Nulla facilisi. Integer laoreet dolor et augue iaculis ultrices. Curabitur sed ex nec tortor tempus lacinia. Donec auctor a justo fringilla sollicitudin. Donec condimentum metus purus, vel aliquet nulla egestas eu. Vestibulum ac commodo dolor. Vestibulum a arcu purus. Morbi fringilla, mi vel cursus commodo, ex felis vestibulum mi, vitae feugiat magna nisi sit amet nisi. In sem dui, consectetur et pellentesque non, volutpat vitae mi.
+
+    .col-md-6
+        blockquote(cite='Mary Anne Radmacher')
+            p I am not the same, having seen the moon shine on the other side of the world.
+            p.pull-right Mary Anne Radmacher
+        blockquote(cite='Mary Anne Radmacher')
+            p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis sem ullamcorper, sollicitudin neque vitae, accumsan est. Nam venenatis velit ipsum, sed fringilla lectus ultricies a.
+            p.pull-right Julius Ceasar
+        blockquote(cite='Mary Anne Radmacher')
+            p I am not the same, having seen the moon shine on the other side of the world.
+            p.pull-right Mary Anne Radmacher
+block append after_content
+    hr
+    .container
+        .row
+            .col-6.col-sm-6.col-lg-4.hei
+                h2
+                    i.fa.fa-music
+                    |  Something
+                p.pgl.text-justify
+                    | Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dapibus sed arcu at facilisis. In vestibulum malesuada enim, in blandit purus ultrices nec. Integer in egestas orci. Aliquam id bibendum lacus. In interdum vestibulum purus. Nam euismod volutpat.
+
+                    p
+                        a.btn.btn-default.btn-block(href='#', role='button') See more
+            .col-6.col-sm-6.col-lg-4.hei
+                h2
+                    i.fa.fa-quote-left
+                    |  Something different
+                p.pgl.text-justify
+                    | Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dapibus sed arcu at facilisis. In vestibulum malesuada enim, in blandit purus ultrices nec. Integer in egestas orci. Aliquam id bibendum lacus. In interdum vestibulum purus. Nam euismod volutpat.
+
+                    p
+                        a.btn.btn-default.btn-block(href='#', role='button') See more
+            .col-6.col-sm-6.col-lg-4.hei
+                h2
+                    i.fa.fa-rss
+                    |  Advertisement
+                p.pgl.text-justify
+                    | Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dapibus sed arcu at facilisis. In vestibulum malesuada enim, in blandit purus ultrices nec. Integer in egestas orci. Aliquam id bibendum lacus. In interdum vestibulum purus. Nam euismod volutpat.
+
+                    p
+                        a.btn.btn-default.btn-block(href='#', role='button') See more
 
 block append javascript
     script(src='/public/slider-pro/dist/js/jquery.sliderPro.min.js')
