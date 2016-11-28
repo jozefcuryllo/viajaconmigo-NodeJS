@@ -1,13 +1,21 @@
 extends ../layout
 
 block append content
-    div.col-md-4
-    div.col-md-4
-        form(method='post', enctype="multipart/form-data")
-            input(type='text', name='name', class='form-control', placeholder='Name')
-            input(type='text', name='description', class='form-control', placeholder='Description')
-            input(type='text', name='longitude', class='form-control', placeholder='Longitude')
-            input(type='text', name='latitude', class='form-control', placeholder='Latitude')
-            input(type="file", name="photos", class='form-control')
-            input(type='submit', class='btn btn-default')
-    div.col-md-4
+    h2.page-header Select place on the map
+
+    #map
+
+    h2.page-header Write details
+
+    form(method='post', enctype='multipart/form-data')
+        input(type='text', name='name', class='form-control', placeholder='Name')
+        input(type='text', name='description', class='form-control', placeholder='Description')
+        input(type='text', name='longitude', class='form-control', value='19')
+        input(type='text', name='latitude', class='form-control', value='21')
+        input(type='file', name='photos', class='form-control', multiple)
+        input(type='submit', class='btn btn-default')
+
+
+block append javascript
+    script(src='/public/javascripts/maps.js')
+    script(async, defer, src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAZioyTQoKs3tMMEgnPWNtdxyne15XBCSg&callback=initMap')

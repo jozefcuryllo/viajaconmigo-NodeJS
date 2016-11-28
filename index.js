@@ -8,17 +8,16 @@ var session = require('express-session');
 var flash = require('connect-flash');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
-
+var debug = require('express-debug');
 // Connection URL
 var url = 'mongodb://jcuryllo:qwerty@ds147167.mlab.com:47167/ulpgcasw';
 var mongoose = require('mongoose');
 mongoose.connect(url);
 
 
-
 var app = express();
 var port = process.env.PORT || 3000;
-app.listen(port);
+
 
 var userSchema = mongoose.Schema({
     firstname: String,
@@ -30,21 +29,18 @@ var userSchema = mongoose.Schema({
 });
 
 var placeSchema = mongoose.Schema({
+    _id: {type: String},
     name: String,
     description: String,
     latitude: Number,
-    longitude: Number
+    longitude: Number,
+    images: [{filename: String, mimetype: String, created: Date}]
 });
 
-var imageSchema = mongoose.Schema({
-    path: String,
-    created: Date,
-    placeId: String
-});
 
 var User = mongoose.model('User', userSchema);
 var Place = mongoose.model('Place', placeSchema);
-var Image = mongoose.model('Image', imageSchema);
+
 
 app.use(session({secret: 'keyboard cat', cookie: {maxAge: 60000}}));
 app.use(passport.initialize());
@@ -54,14 +50,17 @@ app.use(passport.session());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
+app.use('/uploads', express.static(__dirname + "/uploads"));
+app.use('/public', express.static(__dirname + "/public"));
+var DepLinker = require('dep-linker');
+DepLinker.copyDependenciesTo('./public');
 app.use(flash());
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(require('morgan')('combined'));
@@ -112,19 +111,18 @@ app.use(function (req, res, next) {
 });
 
 
-var routes = require('./routes/index');
 var users = require('./routes/users');
 var places = require('./routes/places');
 
-app.use('/', routes);
+app.use('/', places);
 app.use('/users', users);
 app.use('/places', places);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+app.use(function (req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handlers
@@ -132,25 +130,27 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
+    app.use(function (err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
     });
-  });
 }
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
 });
 
+//debug(app, {});
+app.listen(port);
 
 module.exports = mongoose;
 module.exports = app;

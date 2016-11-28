@@ -1,6 +1,17 @@
 extends ../layout
 
-block append content
-    p index of places
-    each p in places
-        p= p.name
+block append css
+    link(rel='stylesheet', href='/public/slider-pro/dist/css/slider-pro.min.css')
+block append before_content
+    #my-slider.slider-pro
+        .sp-slides
+            for place in places
+                for image in place.images
+                    .sp-slide
+                        img.sp-image(src='/uploads/#{image.filename}')
+                        p.sp-layer.sp-black.sp-padding(data-width='100%',data-position='bottomLeft')= place.name
+
+
+block append javascript
+    script(src='/public/slider-pro/dist/js/jquery.sliderPro.min.js')
+    script(src='/public/javascripts/slider.js')
