@@ -1,0 +1,12 @@
+extends ../layout
+
+block append content
+    h1.page-header Find interesting place to see!
+
+    .col-md-12
+        for place in places
+            ul
+                li
+                    a(href='/places/show/' + place._id, title='#{place.name}')= place.name
+
+

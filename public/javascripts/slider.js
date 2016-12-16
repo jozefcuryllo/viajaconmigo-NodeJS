@@ -10,4 +10,16 @@ jQuery(document).ready(function ($) {
         autoScaleLayers: false,
         shuffle: true
     });
+
+    $('#small-slider').sliderPro({
+        width: '100%',
+        height: 150,
+        arrows: false,
+        buttons: false,
+        waitForLayers: true,
+        fade: false,
+        autoplay: false,
+        autoScaleLayers: false,
+        shuffle: true
+    });
 });

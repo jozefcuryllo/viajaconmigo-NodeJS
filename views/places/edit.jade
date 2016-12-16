@@ -9,19 +9,20 @@ block append content
 
     .col-md-12
         .panel.panel-default
-            .panel-heading Add new place
+            .panel-heading Edit the place
             .panel-body
                 form.form-horizontal(role='form', method='POST', enctype='multipart/form-data')
                     .form-group
                         label.col-md-4.control-label(for='name') Name
                         .col-md-6
-                            input.form-control(type='text', name='name', id='name', value='', required='', autofocus='', placeholder='Name')
+                            input.form-control(type='text', name='name', id='name', value='#{place.name}', required='', autofocus='', placeholder='Name')
                     .form-group
                         label.col-md-4.control-label(for='description') Description
                         .col-md-6
                             textarea.form-control(type='text', name='description', id='description', placeholder='Description')
-                    input(type='hidden', name='longitude', class='form-control', value='19')
-                    input(type='hidden', name='latitude', class='form-control', value='21')
+                                | #{place.description}
+                    input(type='hidden', name='longitude', class='form-control', value='#{place.longitude}')
+                    input(type='hidden', name='latitude', class='form-control', value='#{place.latitude}')
                     .form-group
                         label.col-md-4.control-label(for='photos') Pictures
                         .col-md-6
@@ -34,5 +35,22 @@ block append content
 
 
 block append javascript
-    script(src='/public/javascripts/maps.js')
+    script.
+        function initMap() {
+            var uluru = {lat: #{place.latitude}, lng: #{place.longitude}};
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 4,
+                center: uluru
+            });
+            var marker = new google.maps.Marker({
+                position: uluru,
+                map: map,
+                draggable: true
+            });
+
+            google.maps.event.addListener(marker, 'dragend', function (event) {
+                document.getElementsByName('longitude').item(0).value = event.latLng.lng();
+                document.getElementsByName('latitude').item(0).value = event.latLng.lat();
+            });
+        }
     script(async, defer, src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAZioyTQoKs3tMMEgnPWNtdxyne15XBCSg&callback=initMap')

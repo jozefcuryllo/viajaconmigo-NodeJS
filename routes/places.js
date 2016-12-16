@@ -5,6 +5,7 @@ var router = express.Router();
 var Place = require('mongoose').model('Place');
 var path = require('path');
 var crypto = require('crypto');
+var moment = require('moment');
 
 var storage = multer.diskStorage({
     destination: './uploads/',
@@ -28,26 +29,26 @@ router.get('/', function (req, res) {
         }
 
     }).sort({'created': -1})
-        .limit(5)
+        .limit(50)
         .exec(function (err, places) {
             if (err) {
                 return console.error(err);
             }
-            console.log(places);
 
             res.render('places/index', {places: places});
         });
 
 });
 
-router.get('/add', function (req, res) {
+router.get('/add', require('connect-ensure-login').ensureLoggedIn(), function (req, res) {
 
 
     res.render('places/add');
 
 });
 
-router.post('/add', upload.any(), function (req, res) {
+
+router.post('/add', upload.any(), require('connect-ensure-login').ensureLoggedIn(), function (req, res) {
 
     var myPlace = new Place({
         _id: mongoose.Types.ObjectId(),
@@ -65,13 +66,129 @@ router.post('/add', upload.any(), function (req, res) {
     myPlace.save(function (err, place) {
         if (!err) {
 
-            res.redirect('places/add');
+            return res.redirect('/places');
         }
 
         console.log(err);
     });
 
 
+});
+
+router.get('/show/:_id', function (req, res) {
+
+    Place.findOne({'_id': req.params._id})
+        .populate('_userId')
+        .exec(function (err, place) {
+            if (err) {
+                return console.error(err);
+            }
+            console.log(place._userId);
+            res.render('places/show', {place: place, moment: moment});
+        });
+});
+
+router.get('/edit/:_id', require('connect-ensure-login').ensureLoggedIn(), function (req, res) {
+
+
+    Place.findOne({'_id': req.params._id})
+        .exec(function (err, place) {
+            if (err) {
+                return console.error(err);
+            }
+
+            res.render('places/edit', {place: place});
+
+        });
+
+});
+
+router.post('/edit/:_id', upload.any(), require('connect-ensure-login').ensureLoggedIn(), function (req, res) {
+
+    Place.findOne({'_id': req.params._id}, function (err, place) {
+        if (err) {
+            return console.error(err);
+        }
+
+    })
+        .exec(function (err, place) {
+            if (err) {
+                return console.error(err);
+            }
+
+            req.files.forEach(function (item) {
+                place.images.push({filename: item.filename, mimetype: item.mimetype, created: new Date()})
+            });
+
+            place.name = req.body.name;
+            place.description = req.body.description;
+            place.longitude = req.body.longitude;
+            place.latitude = req.body.latitude;
+
+            place.save(function (err, place) {
+                if (!err) {
+                    return res.redirect('/places');
+                }
+
+                res.render('places/show', {place: place, moment: moment});
+            });
+
+        console.log(err);
+    });
+
+
+});
+
+router.get('/list', function (req, res) {
+    Place.find({}, function (err, places) {
+        if (err) {
+            return console.error(err);
+        }
+
+    }).sort({'created': -1})
+        .limit(50)
+        .exec(function (err, places) {
+            if (err) {
+                return console.error(err);
+            }
+
+            res.render('places/list', {places: places});
+        });
+});
+
+router.post('/show/:_id', require('connect-ensure-login').ensureLoggedIn(), function (req, res) {
+
+    Place.findOne({'_id': req.params._id}, function (err, place) {
+        if (err) {
+            req.flash('error_messages', "Error: Place has not been found! Try again.");
+            return res.redirect('/');
+        }
+
+    })
+        .populate('_userId')
+        .exec(function (err, place) {
+            if (err) {
+                req.flash('error_messages', "Error: Place has not been found! Try again.");
+                return res.redirect('/');
+            }
+
+            place.comments.push({
+                _userId: req.user._id,
+                content: req.body.comment,
+                created: new Date(),
+                modified: new Date()
+            });
+
+            place.save(function (err, place) {
+                if (!err) {
+                    req.flash('success_messages', "Comment has been saved! Thank you.");
+                    return res.render('places/show', {place: place, moment: moment});
+                }
+                req.flash('error_messages', "Error occured during saving your comment: " + err.message);
+                return res.render('places/show', {place: place, moment: moment});
+            });
+
+        });
 });
 
 module.exports = upload;

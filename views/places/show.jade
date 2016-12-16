@@ -1,0 +1,88 @@
+extends ../layout
+
+block append css
+    link(rel='stylesheet', href='/public/slider-pro/dist/css/slider-pro.min.css')
+
+block append content
+    h1.page-header #{place.name}
+        a(href='/places/edit/' + place._id)
+        &nbsp; [Edit]
+    p.text-justified #{place.description}
+
+    if (place.images && place.images.length > 0)
+        #my-slider.slider-pro
+            .sp-slides
+                for image in place.images
+                    .sp-slide
+                        img.sp-image(src='/uploads/#{image.filename}')
+                        p.sp-layer.sp-black.sp-padding(data-width='100%',data-position='bottomLeft')= place.name
+
+        br
+        br
+
+block append after_content
+    .container
+        .row
+            if (place.articles && place.articles.length > 0)
+
+            else
+                h2.page-header Articles
+                p Add your own article about this place
+
+
+    if (place.comments && place.comments.length > 0)
+        for comment in place.comments
+            .comments-container
+                h1
+                    | Comments
+                ul#comments-list.comments-list
+                    li
+                        .comment-main-level
+                            // Avatar
+                            .comment-avatar
+                                img(src='http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg', alt='')
+                            // Contenedor del Comentario
+                            .comment-box
+                                .comment-head
+                                    h6.comment-name #{comment._userId[0].name}
+                                    span #{moment().from(comment.created)}
+                                    i.fa.fa-reply
+                                    i.fa.fa-heart
+                                .comment-content
+                                    #{comment.content}
+    else
+        .container
+            .row
+                h3.page-header Add your comment
+            .row
+                .col-md-12
+                    .widget-area
+                        .status-upload
+                            form(method='post')
+                                textarea(placeholder='What do you think about this place?', name='comment', id='comment')
+                                button.btn.btn-success.green(type='submit')
+                                    i.fa.fa-share
+                                    |  Share
+        br
+
+    #map
+
+block append javascript
+    script.
+        function initMap() {
+            var uluru = {lat: #{place.latitude}, lng: #{place.longitude}};
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 4,
+                center: uluru
+            });
+            var marker = new google.maps.Marker({
+                position: uluru,
+                map: map,
+                draggable: false
+            });
+        }
+    script(async, defer, src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAZioyTQoKs3tMMEgnPWNtdxyne15XBCSg&callback=initMap')
+
+block append javascript
+    script(src='/public/slider-pro/dist/js/jquery.sliderPro.min.js')
+    script(src='/public/javascripts/slider.js')

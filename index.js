@@ -9,6 +9,9 @@ var flash = require('connect-flash');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var debug = require('express-debug');
+var breadcrumb = require('express-url-breadcrumb');
+var moment = require('moment');
+
 // Connection URL
 var url = 'mongodb://jcuryllo:qwerty@ds147167.mlab.com:47167/ulpgcasw';
 var mongoose = require('mongoose');
@@ -20,29 +23,59 @@ var port = process.env.PORT || 3000;
 
 
 var userSchema = mongoose.Schema({
-    firstname: String,
-    lastname: String,
-    password: String,
-    email: String,
+    _id: {type: String, unique: true, required: true, index: true},
+    name: {type: String, unique: true, required: true},
+    password: {type: String, required: true},
+    email: {type: String, unique: true, required: true},
     created: Date,
     modified: Date
 });
 
+var User = mongoose.model('User', userSchema);
+
+var commentSchema = mongoose.Schema({
+    _userId: {type: String, ref: 'User'},
+    content: {type: String, unique: true, required: true},
+    created: Date,
+    modified: Date
+
+});
+
 var placeSchema = mongoose.Schema({
-    _id: {type: String},
+    _id: String,
     name: String,
     description: String,
     latitude: Number,
     longitude: Number,
-    images: [{filename: String, mimetype: String, created: Date}]
+    images: [{
+        description: String,
+        filename: String,
+        mimetype: String,
+        created: Date
+    }],
+    likes: [{
+        _userId: {type: String, ref: 'User'},
+        type: Number // 0 - neutral, 1 - like, 2 - dislike
+    }],
+    created: Date,
+    modified: Date,
+    articles: [{type: String, ref: 'Article'}],
+    comments: [commentSchema]
 });
-
-
-var User = mongoose.model('User', userSchema);
 var Place = mongoose.model('Place', placeSchema);
 
+var articleSchema = mongoose.Schema({
+    _userId: {type: String, ref: 'User'},
+    _placeId: {type: String, ref: 'Place'},
+    body: String,
+    created: Date,
+    modified: Date,
+    comments: [commentSchema]
+});
+var Article = mongoose.model('Article', articleSchema);
 
-app.use(session({secret: 'keyboard cat', cookie: {maxAge: 60000}}));
+
+app.use(session({secret: 'keyboard cat', cookie: {maxAge: 600000, _expires: 60000000}}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -66,11 +99,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(require('morgan')('combined'));
 app.use(bodyParser());
 
+String.prototype.capitalize = function () {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+app.use(breadcrumb(function (item, index) {
+    item.label = item.label.capitalize();
+}));
+
+moment().format();
 
 passport.use(new Strategy(
     {
         usernameField: 'email',
-        passwordField: 'password'
+        passwordField: 'password',
+        successRedirect: '/',
+        failureRedirect: '/users/login'
+
     },
     function (email, password, cb) {
         User.findOne({email: email}, function (err, user) {
@@ -110,6 +155,11 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.use(function (req, res, next) {
+    res.locals.success_messages = req.flash('success_messages');
+    res.locals.error_messages = req.flash('error_messages');
+    next();
+});
 
 var users = require('./routes/users');
 var places = require('./routes/places');
@@ -154,3 +204,4 @@ app.listen(port);
 
 module.exports = mongoose;
 module.exports = app;
+module.exports = moment;

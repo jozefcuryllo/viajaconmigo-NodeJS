@@ -11,51 +11,60 @@ router.get('/register',
 router.post('/register',
     function (req, res) {
         var myUser = new User({
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
+            _id: require('mongoose').Types.ObjectId(),
+            name: req.body.name,
             password: req.body.password,
-            email: req.body.email
+            email: req.body.email,
+            created: new Date(),
+            modified: new Date()
         });
 
-        myUser.save(function (err) {
-            if (!err)
-                res.redirect('/users/login');
-        });
+        if (req.body.password == req.body.repassword) {
+            myUser.save(function (err) {
+                if (!err) {
+                    req.flash('success_messages', "User has been saved! You can log in using your credentials.");
+                    return res.redirect('/users/login');
+                }
+                else {
+                    req.flash('error_messages', "Error - can't save a new user! Try again. Error message: " + err.message);
+
+                    return res.redirect('/users/register');
+                }
+            });
+        }
+        else {
+            req.flash('error_messages', "Passwords did not match.");
+            return res.redirect('/users/register');
+        }
 
 
     });
 
 router.get('/login',
     function (req, res) {
-        res.render('users/login', {message: req.flash('error')});
+        res.render('users/login');
     });
-
-// router.post('/login',
-//     passport.authenticate('local', {
-//         failureRedirect: '/users/login',
-//         successRedirect: '/',
-//         badRequestMessage : 'Missing email or password.',
-//         failureFlash: true
-//     }),
-//     function (req, res) {
-//
-//         res.redirect('/');
-//     });
 
 router.post('/login', function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
         if (err) {
-            return next(err); // will generate a 500 error
+            req.flash('error_messages', "Authentication failed!");
+            return res.redirect('back');
         }
-        // Generate a JSON response reflecting authentication status
+
         if (!user) {
-            return res.render('users/login', {success: false, message: 'Authentication failed'});
+            req.flash('error_messages', "Authentication failed!");
+            return res.redirect('back');
         }
+
         req.login(user, function (err) {
             if (err) {
-                return next(err);
+                req.flash('error_messages', "Authentication failed!");
+                return res.redirect('/users/register');
             }
-            return res.redirect('/places');
+
+            req.flash('success_messages', "Authentication success!");
+            return res.redirect('/');
         });
     })(req, res, next);
 });
@@ -64,13 +73,7 @@ router.post('/login', function (req, res, next) {
 router.get('/logout',
     function (req, res) {
         req.logout();
-        res.redirect('/');
-    });
-
-router.get('/profile',
-    require('connect-ensure-login').ensureLoggedIn(),
-    function (req, res) {
-        res.render('profile', {user: req.user});
+        return res.redirect('/');
     });
 
 module.exports = passport;
