@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var multer = require('multer');
 var router = express.Router();
 var Place = require('mongoose').model('Place');
+var User = require('mongoose').model('User');
 var path = require('path');
 var crypto = require('crypto');
 var moment = require('moment');
@@ -78,12 +79,19 @@ router.post('/add', upload.any(), require('connect-ensure-login').ensureLoggedIn
 router.get('/show/:_id', function (req, res) {
 
     Place.findOne({'_id': req.params._id})
-        .populate('_userId')
+    // .populate('_userId') -- it doesn't work
         .exec(function (err, place) {
             if (err) {
-                return console.error(err);
+                return console.log(err);
             }
-            console.log(place._userId);
+
+            User.findOne({'_id': place._userId}, function (err, user) {
+                if (err) {
+                    return console.log(err);
+                }
+                place._userId = user;
+            });
+
             res.render('places/show', {place: place, moment: moment});
         });
 });

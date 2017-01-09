@@ -6,7 +6,7 @@ block append css
 block append content
     h1.page-header #{place.name}
         a(href='/places/edit/' + place._id)
-        &nbsp; [Edit]
+            | &nbsp; [Edit]
     p.text-justified #{place.description}
 
     if (place.images && place.images.length > 0)
@@ -21,13 +21,6 @@ block append content
         br
 
 block append after_content
-    .container
-        .row
-            if (place.articles && place.articles.length > 0)
-
-            else
-                h2.page-header Articles
-                p Add your own article about this place
 
 
     if (place.comments && place.comments.length > 0)
@@ -44,7 +37,7 @@ block append after_content
                             // Contenedor del Comentario
                             .comment-box
                                 .comment-head
-                                    h6.comment-name #{comment._userId[0].name}
+                                    h6.comment-name hgfjbvjgx
                                     span #{moment().from(comment.created)}
                                     i.fa.fa-reply
                                     i.fa.fa-heart
