@@ -2,7 +2,7 @@ extends ../layout
 
 block append css
     link(rel='stylesheet', href='/public/slider-pro/dist/css/slider-pro.min.css')
-block append before_content
+block prepend before_content
     #my-slider.slider-pro
         .sp-slides
             for place in places
@@ -15,19 +15,23 @@ block append before_content
 block breadcrumb
 
 block append content
-    h1.page-header Find interesting place to see!
-    .col-md-6
-        p.text-justify Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis sem ullamcorper, sollicitudin neque vitae, accumsan est. Nam venenatis velit ipsum, sed fringilla lectus ultricies a. Etiam tincidunt cursus purus posuere facilisis. Aenean tincidunt gravida urna eu tempor. Nulla facilisi. Integer laoreet dolor et augue iaculis ultrices. Curabitur sed ex nec tortor tempus lacinia. Donec auctor a justo fringilla sollicitudin. Donec condimentum metus purus, vel aliquet nulla egestas eu. Vestibulum ac commodo dolor. Vestibulum a arcu purus. Morbi fringilla, mi vel cursus commodo, ex felis vestibulum mi, vitae feugiat magna nisi sit amet nisi. In sem dui, consectetur et pellentesque non, volutpat vitae mi.
+    .container
+        h1.page-header
+            i.fa.fa-search
+            | Find interesting place to see!
+        .col-md-6
+            p.text-justify Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis sem ullamcorper, sollicitudin neque vitae, accumsan est. Nam venenatis velit ipsum, sed fringilla lectus ultricies a. Etiam tincidunt cursus purus posuere facilisis. Aenean tincidunt gravida urna eu tempor. Nulla facilisi. Integer laoreet dolor et augue iaculis ultrices. Curabitur sed ex nec tortor tempus lacinia. Donec auctor a justo fringilla sollicitudin. Donec condimentum metus purus, vel aliquet nulla egestas eu. Vestibulum ac commodo dolor. Vestibulum a arcu purus. Morbi fringilla, mi vel cursus commodo, ex felis vestibulum mi, vitae feugiat magna nisi sit amet nisi. In sem dui, consectetur et pellentesque non, volutpat vitae mi.
 
-        p.text-justify Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis sem ullamcorper, sollicitudin neque vitae, accumsan est. Nam venenatis velit ipsum, sed fringilla lectus ultricies a. Etiam tincidunt cursus purus posuere facilisis. Aenean tincidunt gravida urna eu tempor. Nulla facilisi. Integer laoreet dolor et augue iaculis ultrices. Curabitur sed ex nec tortor tempus lacinia. Donec auctor a justo fringilla sollicitudin. Donec condimentum metus purus, vel aliquet nulla egestas eu. Vestibulum ac commodo dolor. Vestibulum a arcu purus. Morbi fringilla, mi vel cursus commodo, ex felis vestibulum mi, vitae feugiat magna nisi sit amet nisi. In sem dui, consectetur et pellentesque non, volutpat vitae mi.
+            p.text-justify Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis sem ullamcorper, sollicitudin neque vitae, accumsan est. Nam venenatis velit ipsum, sed fringilla lectus ultricies a. Etiam tincidunt cursus purus posuere facilisis. Aenean tincidunt gravida urna eu tempor. Nulla facilisi. Integer laoreet dolor et augue iaculis ultrices. Curabitur sed ex nec tortor tempus lacinia. Donec auctor a justo fringilla sollicitudin. Donec condimentum metus purus, vel aliquet nulla egestas eu. Vestibulum ac commodo dolor. Vestibulum a arcu purus. Morbi fringilla, mi vel cursus commodo, ex felis vestibulum mi, vitae feugiat magna nisi sit amet nisi. In sem dui, consectetur et pellentesque non, volutpat vitae mi.
 
-        p.text-justify Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis sem ullamcorper, sollicitudin neque vitae, accumsan est. Nam venenatis velit ipsum, sed fringilla lectus ultricies a. Etiam tincidunt cursus purus posuere facilisis. Aenean tincidunt gravida urna eu tempor. Nulla facilisi. Integer laoreet dolor et augue iaculis ultrices. Curabitur sed ex nec tortor tempus lacinia. Donec auctor a justo fringilla sollicitudin. Donec condimentum metus purus, vel aliquet nulla egestas eu. Vestibulum ac commodo dolor. Vestibulum a arcu purus. Morbi fringilla, mi vel cursus commodo, ex felis vestibulum mi, vitae feugiat magna nisi sit amet nisi. In sem dui, consectetur et pellentesque non, volutpat vitae mi.
+            p.text-justify Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis sem ullamcorper, sollicitudin neque vitae, accumsan est. Nam venenatis velit ipsum, sed fringilla lectus ultricies a. Etiam tincidunt cursus purus posuere facilisis. Aenean tincidunt gravida urna eu tempor. Nulla facilisi. Integer laoreet dolor et augue iaculis ultrices. Curabitur sed ex nec tortor tempus lacinia. Donec auctor a justo fringilla sollicitudin. Donec condimentum metus purus, vel aliquet nulla egestas eu. Vestibulum ac commodo dolor. Vestibulum a arcu purus. Morbi fringilla, mi vel cursus commodo, ex felis vestibulum mi, vitae feugiat magna nisi sit amet nisi. In sem dui, consectetur et pellentesque non, volutpat vitae mi.
 
-    .col-md-6.masonry
-        for place in places
-            for image in place.images
-                a.masonry-item(href='/places/show/' + place._id, title='#{place.name}')
-                    img(src='/uploads/#{image.filename}')
+        .col-md-6.masonry
+            for place in places
+                for image in place.images
+                    a.masonry-item(href='/places/show/' + place._id, title='#{place.name}')
+                        img(src='/uploads/#{image.filename}')
+        .clearfix
 
 
 block append after_content
@@ -36,32 +40,38 @@ block append after_content
         .row
             .col-6.col-sm-6.col-lg-4.hei
                 h2
-                    i.fa.fa-music
-                    |  Something
-                p.pgl.text-justify
-                    | Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dapibus sed arcu at facilisis. In vestibulum malesuada enim, in blandit purus ultrices nec. Integer in egestas orci. Aliquam id bibendum lacus. In interdum vestibulum purus. Nam euismod volutpat.
+                if lastPlace
+                        i.fa.fa-music
+                        |  Last place
+                    p.pgl.text-justify
+                        b #{lastPlace.name}
+                        br
+                        | #{lastPlace.description}
 
                     p
-                        a.btn.btn-default.btn-block(href='#', role='button') See more
+                        a.btn.btn-default.btn-block(href='/places/show/#{lastPlace.id}', role='button') See more
             .col-6.col-sm-6.col-lg-4.hei
                 h2
-                    i.fa.fa-quote-left
-                    |  Something different
-                p.pgl.text-justify
-                    | Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dapibus sed arcu at facilisis. In vestibulum malesuada enim, in blandit purus ultrices nec. Integer in egestas orci. Aliquam id bibendum lacus. In interdum vestibulum purus. Nam euismod volutpat.
+                if lastArticle
+                        i.fa.fa-quote-left
+                        |  Last article
+                    p.pgl.text-justify
+                       // b #{lastArticle.name}
+                        br
+                       // | #{lastArticle.description}
 
                     p
-                        a.btn.btn-default.btn-block(href='#', role='button') See more
+                   //     a.btn.btn-default.btn-block(href='/articles/#{lastArticle.id}', role='button') See more
             .col-6.col-sm-6.col-lg-4.hei
                 h2
                     i.fa.fa-rss
                     |  Advertisement
                 p.pgl.text-justify
-                    | Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dapibus sed arcu at facilisis. In vestibulum malesuada enim, in blandit purus ultrices nec. Integer in egestas orci. Aliquam id bibendum lacus. In interdum vestibulum purus. Nam euismod volutpat.
+                    | Buy this product! It's awesome!
 
                     p
-                        a.btn.btn-default.btn-block(href='#', role='button') See more
+                        a.btn.btn-default.btn-block(href='https://google.com', role='button') See more
 
-block append javascript
+block append javascripts
     script(src='/public/slider-pro/dist/js/jquery.sliderPro.min.js')
     script(src='/public/javascripts/slider.js')

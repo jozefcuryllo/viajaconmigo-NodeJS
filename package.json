@@ -13,6 +13,7 @@
     "cookie-parser": "^1.4.3",
     "debug": "^2.2.0",
     "dep-linker": "^1.0.24",
+    "easy-autocomplete": "^1.3.5",
     "express": "^4.14.0",
     "express-session": "^1.14.2",
     "express-url-breadcrumb": "0.0.7",

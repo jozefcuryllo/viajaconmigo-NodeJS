@@ -23,7 +23,6 @@ var port = process.env.PORT || 3000;
 
 
 var userSchema = mongoose.Schema({
-    _id: {type: String, unique: true, required: true, index: true},
     name: {type: String, unique: true, required: true},
     password: {type: String, required: true},
     email: {type: String, unique: true, required: true},
@@ -34,15 +33,15 @@ var userSchema = mongoose.Schema({
 var User = mongoose.model('User', userSchema);
 
 var commentSchema = mongoose.Schema({
-    _userId: {type: String, ref: 'User'},
+    _userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     content: {type: String, unique: true, required: true},
     created: Date,
     modified: Date
 
 });
-
+var Comment = mongoose.model('Comment', commentSchema);
 var placeSchema = mongoose.Schema({
-    _id: String,
+    _id: {type: String},
     name: String,
     description: String,
     latitude: Number,

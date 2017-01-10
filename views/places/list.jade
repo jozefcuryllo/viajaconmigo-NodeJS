@@ -1,7 +1,22 @@
 extends ../layout
 
+block append css
+
+
 block append content
-    h1.page-header Find interesting place to see!
+    h2.page-header Search for interesting place
+    #wysz.text-center
+        .row
+            .col-sm-12
+                form(method='post', accept-charset='utf-8')
+                    div(style='display:none;')
+                        input(type='hidden', name='_method', value='POST')
+                    .input.text
+                        input#search.form-control(name='search', type='text', placeholder='Search...')
+                input.btn.btn-primary.pull-right(type='submit', value='Search')
+    h2.page-header See also places near you
+    #map
+
 
     .col-md-12
         for place in places
@@ -10,3 +25,64 @@ block append content
                     a(href='/places/show/' + place._id, title='#{place.name}')= place.name
 
 
+block append javascripts
+    script.
+        $(function () {
+
+            var options = {
+            url: function (phrase) {
+            return "/places/search-places/" + phrase;
+        },
+            ajaxSettings: {
+            dataType: "json",
+            method: "GET",
+            data: {
+            dataType: "json"
+        }
+        },
+            getValue: "name",
+            template: {
+            type: "custom",
+            method: function (value, item) {
+            return "<a href='/places/" + item.id + "' >" + value + "</a>";
+        }
+        },
+            list: {
+            match: {
+            enabled: true
+        },
+            maxNumberOfElements: 8
+        }
+        };
+            $("#search").easyAutocomplete(options);
+        });
+            function initMap() {
+            var uluru = {lat: #{$latitude}, lng: #{$longitude}};
+            var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: uluru
+        });
+            var infowindow = new google.maps.InfoWindow();
+            var marker, i;
+            var locations = [
+            for place in places
+                ['<a href="places/ . #{place.id}>#{place.name}</a>', #{place.latitude}, #{place.longitude}],
+            ];
+            for (i = 0; i < locations.length; i++) {
+            marker = new google.maps.Marker({
+            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+            map: map
+        });
+            google.maps.event.addListener(marker, 'click', (function (marker, i) {
+            return function () {
+            infowindow.setContent(locations[i][0]);
+            infowindow.open(map, marker);
+        }
+        })(marker, i));
+        }
+        }
+
+
+        script(async, defer,src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAZioyTQoKs3tMMEgnPWNtdxyne15XBCSg&callback=initMap'
+
+        script(src = '/js/autocomplete.min.js')

@@ -1,10 +1,14 @@
 extends ../layout
 
 block append content
-    if (locals.user)
-        h1 You're logged in. Your credentials:
-        ul
-            li Firstname: #{user.firstname}
-            li Lastname: #{user.lastname}
-            li Email: #{user.email}
+    .container
+        if (locals.user)
+            h1 You're logged in. Your credentials:
+            ul
+                li Firstname: #{user.username}
+                li Email: #{user.email}
+        else
+            h1 You're not logged in!
+            p You can log-in using
+                a(href='/users/login')  this link.
 

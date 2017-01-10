@@ -2,8 +2,10 @@ var express = require('express');
 var mongoose = require('mongoose');
 var multer = require('multer');
 var router = express.Router();
-var Place = require('mongoose').model('Place');
-var User = require('mongoose').model('User');
+var Place = mongoose.model('Place');
+var Article = mongoose.model('Article');
+var User = mongoose.model('User');
+var Comment = mongoose.model('Comment');
 var path = require('path');
 var crypto = require('crypto');
 var moment = require('moment');
@@ -21,7 +23,27 @@ var storage = multer.diskStorage({
 
 var upload = multer({storage: storage});
 
+var isAuthenticated = function (req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+
+    req.flash('error_messages', "Error: You've no permission to see this page. Please log-in.");
+    res.redirect('/users/login');
+};
+
 router.get('/', function (req, res) {
+
+
+    var lastPlace = null;
+    var lastArticle = null;
+
+    Place.findOne({}, {}, {'created': -1}, function(err, post) {
+       lastPlace = post;
+    });
+
+    Article.findOne({}, {}, {'created': -1}, function(err, post) {
+        lastArticle = post;
+    });
 
 
     Place.find({}, function (err, places) {
@@ -36,12 +58,16 @@ router.get('/', function (req, res) {
                 return console.error(err);
             }
 
-            res.render('places/index', {places: places});
+            res.render('places/index', {
+                places: places,
+                lastPlace: lastPlace,
+                lastArticle: lastArticle
+            });
         });
 
 });
 
-router.get('/add', require('connect-ensure-login').ensureLoggedIn(), function (req, res) {
+router.get('/add', isAuthenticated, function (req, res) {
 
 
     res.render('places/add');
@@ -49,7 +75,7 @@ router.get('/add', require('connect-ensure-login').ensureLoggedIn(), function (r
 });
 
 
-router.post('/add', upload.any(), require('connect-ensure-login').ensureLoggedIn(), function (req, res) {
+router.post('/add', upload.any(), isAuthenticated, function (req, res) {
 
     var myPlace = new Place({
         _id: mongoose.Types.ObjectId(),
@@ -57,7 +83,8 @@ router.post('/add', upload.any(), require('connect-ensure-login').ensureLoggedIn
         description: req.body.description,
         longitude: req.body.longitude,
         latitude: req.body.latitude,
-        images: []
+        images: [],
+        comments: []
     });
 
     req.files.forEach(function (item) {
@@ -78,25 +105,29 @@ router.post('/add', upload.any(), require('connect-ensure-login').ensureLoggedIn
 
 router.get('/show/:_id', function (req, res) {
 
-    Place.findOne({'_id': req.params._id})
-    // .populate('_userId') -- it doesn't work
-        .exec(function (err, place) {
-            if (err) {
-                return console.log(err);
-            }
-
-            User.findOne({'_id': place._userId}, function (err, user) {
+    if (req.params._id) { // difference between / and /:_id
+        Place.findOne({'_id': req.params._id})
+         .populate('comments._userId')
+            .exec(function (err, place) {
                 if (err) {
                     return console.log(err);
                 }
-                place._userId = user;
-            });
 
-            res.render('places/show', {place: place, moment: moment});
-        });
+                if (!place) {
+                    req.flash('error_messages', "Error: Place has not been found! Try again.");
+                    return res.redirect('/places');
+                }
+
+                    console.log(place.comments[0]._userId.name);
+
+                        res.render('places/show', {place: place, moment: moment});
+
+
+            });
+    }
 });
 
-router.get('/edit/:_id', require('connect-ensure-login').ensureLoggedIn(), function (req, res) {
+router.get('/edit/:_id', isAuthenticated, function (req, res) {
 
 
     Place.findOne({'_id': req.params._id})
@@ -111,7 +142,7 @@ router.get('/edit/:_id', require('connect-ensure-login').ensureLoggedIn(), funct
 
 });
 
-router.post('/edit/:_id', upload.any(), require('connect-ensure-login').ensureLoggedIn(), function (req, res) {
+router.post('/edit/:_id', upload.any(), isAuthenticated, function (req, res) {
 
     Place.findOne({'_id': req.params._id}, function (err, place) {
         if (err) {
@@ -154,7 +185,7 @@ router.get('/list', function (req, res) {
         }
 
     }).sort({'created': -1})
-        .limit(50)
+        //.limit(50)
         .exec(function (err, places) {
             if (err) {
                 return console.error(err);
@@ -164,7 +195,7 @@ router.get('/list', function (req, res) {
         });
 });
 
-router.post('/show/:_id', require('connect-ensure-login').ensureLoggedIn(), function (req, res) {
+router.post('/show/:_id', isAuthenticated, function (req, res) {
 
     Place.findOne({'_id': req.params._id}, function (err, place) {
         if (err) {

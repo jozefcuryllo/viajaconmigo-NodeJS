@@ -1,22 +1,22 @@
 extends ../layout
 
 block append content
-    br
-    br
-    .col-md-12
-        .panel.panel-default
-            .panel-heading Login
-            .panel-body
-                form.form-horizontal(role='form', method='POST')
-                    .form-group
-                        label.col-md-4.control-label(for='email') Email
-                        .col-md-6
-                            input.form-control(type='email', name='email', id='email', value='', required='', autofocus='', placeholder='Email')
-                    .form-group
-                        label.col-md-4.control-label(for='password') Password
-                        .col-md-6
-                            input.form-control(type='password', name='password', id='password', placeholder='Password')
-                    .form-group
-                        .col-md-6.col-md-offset-4
-                            button.btn.btn-primary(type='submit')
-                                | Login
+    .container
+
+        .col-md-12
+            .panel.panel-default
+                .panel-heading Login
+                .panel-body
+                    form.form-horizontal(role='form', method='POST')
+                        .form-group
+                            label.col-md-4.control-label(for='email') Email
+                            .col-md-6
+                                input.form-control(type='email', name='email', id='email', value='', required='', autofocus='', placeholder='Email')
+                        .form-group
+                            label.col-md-4.control-label(for='password') Password
+                            .col-md-6
+                                input.form-control(type='password', name='password', id='password', placeholder='Password')
+                        .form-group
+                            .col-md-6.col-md-offset-4
+                                button.btn.btn-primary(type='submit')
+                                    | Login

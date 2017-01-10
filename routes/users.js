@@ -76,5 +76,9 @@ router.get('/logout',
         return res.redirect('/');
     });
 
+router.get('/', function(req, res){
+   res.render('users/index');
+});
+
 module.exports = passport;
 module.exports = router;

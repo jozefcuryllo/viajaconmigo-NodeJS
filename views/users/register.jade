@@ -1,31 +1,30 @@
 extends ../layout
 
 block append content
-    br
-    br
-    .col-md-12
-        .panel.panel-default
-            .panel-heading Register
-            .panel-body
-                form.form-horizontal(role='form', method='POST')
-                    .form-group
-                        label.col-md-4.control-label(for='name') Name
-                        .col-md-6
-                            input(type='text', name='name',id='name' class='form-control', placeholder='Name')
-                    .form-group
-                        label.col-md-4.control-label(for='email') Email
-                        .col-md-6
-                            input(type='email', name='email',id='email' class='form-control', placeholder='Email')
+    .container
+        .col-md-12
+            .panel.panel-default
+                .panel-heading Register
+                .panel-body
+                    form.form-horizontal(role='form', method='POST')
+                        .form-group
+                            label.col-md-4.control-label(for='name') Name
+                            .col-md-6
+                                input(type='text', name='name',id='name' class='form-control', placeholder='Name')
+                        .form-group
+                            label.col-md-4.control-label(for='email') Email
+                            .col-md-6
+                                input(type='email', name='email',id='email' class='form-control', placeholder='Email')
 
-                    .form-group
-                        label.col-md-4.control-label(for='password') Password
-                        .col-md-6
-                            input.form-control(type='password', name='password', id='password', placeholder='Password')
-                    .form-group
-                        label.col-md-4.control-label(for='repassword') Re-type password
-                        .col-md-6
-                            input.form-control(type='password', name='repassword', id='repassword', placeholder='Re-type password')
-                    .form-group
-                        .col-md-6.col-md-offset-4
-                            button.btn.btn-primary(type='submit')
-                                | Register
+                        .form-group
+                            label.col-md-4.control-label(for='password') Password
+                            .col-md-6
+                                input.form-control(type='password', name='password', id='password', placeholder='Password')
+                        .form-group
+                            label.col-md-4.control-label(for='repassword') Re-type password
+                            .col-md-6
+                                input.form-control(type='password', name='repassword', id='repassword', placeholder='Re-type password')
+                        .form-group
+                            .col-md-6.col-md-offset-4
+                                button.btn.btn-primary(type='submit')
+                                    | Register

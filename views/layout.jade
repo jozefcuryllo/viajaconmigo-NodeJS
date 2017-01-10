@@ -8,6 +8,7 @@ html
         link(rel='stylesheet', href='/stylesheets/style.css')
         link(rel='stylesheet', href='/public/font-awesome/css/font-awesome.min.css')
         link(href='https://fonts.googleapis.com/css?family=Alegreya+Sans+SC', rel='stylesheet')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js', integrity='sha256-vvT7Ok9u6GbfnBPXnbM6FVDEO8E1kTdgHOFZOAXrktA=', crossorigin='anonymous')
         block css
     body
         #bmenu.navbar.navbar-default(role='navigation')
@@ -43,28 +44,27 @@ html
 
         block before_content
 
-        #content.container
-            if(success_messages && success_messages.length > 0)
-                br
-                .alert.alert-success= success_messages
-            if(error_messages && error_messages.length > 0)
-                br
-                .alert.alert-danger= error_messages
-            block breadcrumb
-                br
-                ol.breadcrumb
-                    - for(var i =0; i<breadcrumb.length; ++i){
-                    - if(breadcrumb[i].url)
-                    li(itemscope='', itemtype='http://data-vocabulary.org/Breadcrumb')
-                        a(href='#{breadcrumb[i].url}', itemprop='url')
-                            span(itemprop='title') #{breadcrumb[i].label}
-                    - else
-                        li
-                            span #{breadcrumb[i].label}
-                    - }
+            #content.container
+                if(success_messages && success_messages.length > 0)
+                    br
+                    .alert.alert-success= success_messages
+                if(error_messages && error_messages.length > 0)
+                    br
+                    .alert.alert-danger= error_messages
+                block breadcrumb
+                    br
+                    ol.breadcrumb
+                        - for(var i =0; i<breadcrumb.length; ++i){
+                        - if(breadcrumb[i].url)
+                            li(itemscope='', itemtype='http://data-vocabulary.org/Breadcrumb')
+                                a(href='#{breadcrumb[i].url}', itemprop='url')
+                                    span(itemprop='title') #{breadcrumb[i].label}
+                        - else
+                            li
+                                span #{breadcrumb[i].label}
+                        - }
 
-
-            block content
+        block content
 
         block after_content
 
@@ -102,7 +102,6 @@ html
             .col-md-12
                 p.small.pull-right Copyright &copy; 2016 by Awesome Company
 
-        block javascript
+        block javascripts
             script(src='/public/javascripts/scripts.js')
-            script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js', integrity='sha256-vvT7Ok9u6GbfnBPXnbM6FVDEO8E1kTdgHOFZOAXrktA=', crossorigin='anonymous')
 
