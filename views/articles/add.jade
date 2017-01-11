@@ -1,15 +1,12 @@
 extends ../layout
 
 block append content
+
     .container
-        h2.page-header Select place on the map
-
-        #map
-
-        h2.page-header Write details
+        h2.page-header Write an article
 
         .panel.panel-default
-            .panel-heading Add new place
+            .panel-heading New Article
             .panel-body
                 form.form-horizontal(role='form', method='POST', enctype='multipart/form-data')
                     .form-group
@@ -20,19 +17,15 @@ block append content
                         label.col-md-4.control-label(for='description') Description
                         .col-md-6
                             textarea.form-control(type='text', name='description', id='description', placeholder='Description')
-                    input(type='hidden', name='longitude', class='form-control', value='19')
-                    input(type='hidden', name='latitude', class='form-control', value='21')
+
                     .form-group
-                        label.col-md-4.control-label(for='photos') Pictures
+                        label.col-md-4.control-label(for='content') Content
                         .col-md-6
-                            input.form-control(type='file', name='photos', id='photos', multiple)
+                            textarea.form-control(type='text', name='content', id='content', placeholder='Content')
+
                     .form-group
                         .col-md-6.col-md-offset-4
                             button.btn.btn-primary(type='submit')
                                 | Save
 
 
-
-block append javascripts
-    script(src='/public/javascripts/maps.js')
-    script(async, defer, src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAZioyTQoKs3tMMEgnPWNtdxyne15XBCSg&callback=initMap')

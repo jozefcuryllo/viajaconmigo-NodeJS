@@ -53,7 +53,7 @@ var placeSchema = mongoose.Schema({
         created: Date
     }],
     likes: [{
-        _userId: {type: String, ref: 'User'},
+        _userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
         type: Number // 0 - neutral, 1 - like, 2 - dislike
     }],
     created: Date,
@@ -64,7 +64,7 @@ var placeSchema = mongoose.Schema({
 var Place = mongoose.model('Place', placeSchema);
 
 var articleSchema = mongoose.Schema({
-    _userId: {type: String, ref: 'User'},
+    _userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     _placeId: {type: String, ref: 'Place'},
     body: String,
     created: Date,
@@ -162,10 +162,12 @@ app.use(function (req, res, next) {
 
 var users = require('./routes/users');
 var places = require('./routes/places');
+var articles = require('./routes/articles');
 
 app.use('/', places);
 app.use('/users', users);
 app.use('/places', places);
+app.use('/articles', articles);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,0 +1,32 @@
+extends ../layout
+
+block append content
+
+        .container
+            h2.page-header Write an article
+
+            .panel.panel-default
+                .panel-heading New Article
+                .panel-body
+                    form.form-horizontal(role='form', method='POST', enctype='multipart/form-data')
+                        .form-group
+                            label.col-md-4.control-label(for='name') Name
+                            .col-md-6
+                                input(type='hidden', name='_id', id='_id', value='#{article._id}')
+                                input.form-control(type='text', name='name', id='name', value='#{article.name}', required='', autofocus='', placeholder='Name')
+                        .form-group
+                            label.col-md-4.control-label(for='description') Description
+                            .col-md-6
+                                textarea.form-control(name='description', id='description', placeholder='Description')
+                                    | #{article.description}
+                        .form-group
+                            label.col-md-4.control-label(for='content') Content
+                            .col-md-6
+                                textarea.form-control(name='content', id='content', placeholder='Content')
+                                    | #{article.content}
+                        .form-group
+                            .col-md-6.col-md-offset-4
+                                button.btn.btn-primary(type='submit')
+                                    | Save
+
+

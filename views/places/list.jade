@@ -39,13 +39,6 @@ block append content
         #map
 
 
-        .col-md-12
-            for place in places
-                ul
-                    li
-                        a(href='/places/show/' + place._id, title='#{place.name}')= place.name
-
-
 block append javascripts
 
 

@@ -182,12 +182,12 @@ router.get('/list', function (req, res) {
 
 
 
-    Place.find({}, function (err, places) {
+    Place.find({}, function (err, places) { // longitude: { $gt: 1, $lt: 2 }
         if (err) {
             return console.error(err);
         }
 
-    }).sort({'created': -1})
+    })
         //.limit(50)
         .exec(function (err, places) {
             if (err) {
