@@ -17,7 +17,7 @@ var isAuthenticated = function (req, res, next) {
 
 router.get('/', function (req, res) {
 
-    Article.find({})
+    Article.find()
         .populate('_placeId')
         .exec(function (err, articles) {
             if (err) {
@@ -36,24 +36,17 @@ router.get('/add/:_placeId', isAuthenticated, function (req, res) {
     res.render('articles/add', {_placeId: req.params._placeId});
 });
 
-router.get('/edit/:_id', isAuthenticated, function (req, res) {
-    Article.find({'_id': req.params._id}, function(err, article){
-        if (err){
-            req.flash('error_messages', "Error occured with searching for articles");
-            console.log(err);
-            return res.redirect('/');
-        }
-    }).exec(function (err, article) {
-        if (err) {
-            req.flash('error_messages', "Error occured with searching for articles");
-            console.log(err);
-            return res.redirect('/');
-        }
+router.get('/edit/:_id',isAuthenticated, function (req, res) {
 
-        res.render('articles/edit', {
-            article: article
+    Article.findOne({'_id': req.params._id})
+        .exec(function (err, article) {
+            if (err) {
+                return console.error(err);
+            }
+
+            res.render('articles/edit', {article: article});
+
         });
-    });
 
 });
 
@@ -85,49 +78,60 @@ router.post('/add/:_placeId', isAuthenticated, function (req, res) {
     });
 });
 
-router.post('/edit/:_placeId', isAuthenticated, function (req, res) {
-    var myArticle = new Article({
-        _id: req.body._id,
-        name: req.body.name,
-        description: req.body.description,
-        content: req.body.content,
-        _userId: req.user._id,
-        _placeId: req.params._placeId,
-        modified: new Date()
+router.post('/edit/:_id', isAuthenticated, function (req, res) {
 
-    });
+    Article.findOne({'_id': req.params._id})
+        .exec(function(err, article){
+
+                article.name =  req.body.name;
+                article.description = req.body.description;
+                article.content = req.body.content;
+                article._userId = req.user._id;
+                article.modified = new Date();
 
 
-    myArticle.save(function (err, article) {
-        if (err) {
-            req.flash('error_messages', "Error occured with saving article. Try again!");
-            return res.redirect('/articles');
-        }
+            article.save(function (err, article) {
+                if (err) {
+                    req.flash('error_messages', "Error occured with saving article. Try again!");
+                    console.log(err);
+                    return res.redirect('/articles');
+                }
 
-        req.flash('success_messages', "You article has been saved succesfully!");
-        return res.redirect('/articles');
-    });
+                req.flash('success_messages', "You article has been saved succesfully!");
+                return res.redirect('/articles');
+            });
+        });
+
+
+
+
+
+
 });
 
-router.get('/show/:_id', function (req, res){
+router.get('/show/:_id', function (req, res) {
     Article.findOne({'_id': req.params._id})
         .populate('_placeId')
         .exec(function (err, article) {
-        if (err) {
-            req.flash('error_messages', "Error occured with searching for article");
-            console.log(err);
-            return res.redirect('/');
-        }
+            if (err) {
+                req.flash('error_messages', "Error occured with searching for article");
+                console.log(err);
+                return res.redirect('/');
+            }
 
-        console.log(article);
+            console.log(article);
 
-        res.render('articles/show', {
-            article: article
+            res.render('articles/show', {
+                article: article
+            });
         });
-    });
 });
 
-router.get('/show', function(req, res){
+router.get('/show', function (req, res) {
+    return res.redirect('/articles');
+});
+
+router.get('/edit', function (req, res) {
     return res.redirect('/articles');
 });
 

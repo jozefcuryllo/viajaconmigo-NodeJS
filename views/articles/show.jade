@@ -6,5 +6,7 @@ block append content
             ="  "
             a(href='/places/show/#{article._placeId._id}',title='See this place')
                 i.fa.fa-share(aria-hidden='true')
+            a(href='/articles/edit/#{article._id}', title='Edit this article', class='pull-right')
+                i.fa.fa-pencil(aria-hidden='true')
         p #{article.description}
         p #{article.content}

@@ -102,15 +102,16 @@ block append content
                 .carousel-inner
                     .item.active
                         ul.thumbnails
-                            for article in articles
-                                li.col-sm-3
-                                    .fff
-                                        .thumbnail
-                                            a(href='/articles/show/#{article._id}')
-                                                img(src='/uploads/#{article._placeId.images[0].filename}', alt='#{article._placeId.name}')
-                                        .caption
-                                            h4 #{article.name}
-                                            p #{article.description}
-                                            .text-center
-                                                a.btn.btn-primary(href='/articles/show/#{article._id}')
-                                                    | Read More
+                            if articles
+                                for article in articles
+                                    li.col-sm-3
+                                        .fff
+                                            .thumbnail
+                                                a(href='/articles/show/#{article._id}')
+                                                    img(src='/uploads/#{article._placeId.images[0].filename}?dim=200x100', alt='#{article._placeId.name}')
+                                            .caption
+                                                h4 #{article.name}
+                                                p #{article.description}
+                                                .text-center
+                                                    a.btn.btn-primary(href='/articles/show/#{article._id}')
+                                                        | Read More

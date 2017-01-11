@@ -37,6 +37,7 @@ router.get('/', function (req, res) {
 
     var lastPlace = null;
     var lastArticle = null;
+    var placesImages = null;
 
     Place.findOne({}, {}, {}, function(err, post) {
        lastPlace = post;
@@ -45,6 +46,15 @@ router.get('/', function (req, res) {
     Article.findOne({}, {}, {}, function(err, post) {
         lastArticle = post;
     });
+
+    Place.find()
+        .limit(3)
+        .exec(function(err, places){
+            if (err) {
+                return console.error(err);
+            }
+           placesImages = places;
+        });
 
 
     Place.find({}, function (err, places) {
@@ -60,10 +70,15 @@ router.get('/', function (req, res) {
                 return console.error(err);
             }
 
+            if(!places || !lastPlace || !lastArticle || !placesImages){
+                return res.redirect('/');
+            }
+
             res.render('places/index', {
                 places: places,
                 lastPlace: lastPlace,
-                lastArticle: lastArticle
+                lastArticle: lastArticle,
+                placesImages: placesImages
             });
         });
 
@@ -254,10 +269,10 @@ router.post('/show/:_id', isAuthenticated, function (req, res) {
             place.save(function (err, place) {
                 if (!err) {
                     req.flash('success_messages', "Comment has been saved! Thank you.");
-                    return res.render('places/show', {place: place, moment: moment});
+                    return res.redirect('/places/show/' + place._id);
                 }
                 req.flash('error_messages', "Error occured during saving your comment: " + err.message);
-                return res.render('places/show', {place: place, moment: moment});
+                return res.redirect('/places/show/' + place._id);
             });
 
         });
@@ -276,6 +291,10 @@ router.get('/search-places/:name', function(req, res){
 });
 
 router.get('/show', function(req, res){
+    return res.redirect('/places/list');
+});
+
+router.get('/edit', function(req, res){
     return res.redirect('/places/list');
 });
 

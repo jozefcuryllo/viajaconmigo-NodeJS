@@ -24,6 +24,7 @@ var port = process.env.PORT || 3000;
 
 
 var userSchema = mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
     name: {type: String, required: true},
     password: {type: String, required: true},
     email: {type: String, unique: true, required: true},

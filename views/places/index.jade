@@ -5,7 +5,7 @@ block append css
 block prepend before_content
     #my-slider.slider-pro
         .sp-slides
-            for place in places
+            for place in placesImages
                 for image in place.images
                     .sp-slide
                         img.sp-image(src='/public/slider-pro/dist/css/images/blank.gif',data-src='/uploads/#{image.filename}?dim=1600x1200')
@@ -39,8 +39,9 @@ block append after_content
     .container
         .row
             .col-6.col-sm-6.col-lg-4.hei
-                h2
+
                 if lastPlace && lastPlace.name
+                    h2
                         i.fa.fa-music
                         |  Last place
                     p.pgl.text-justify
@@ -51,8 +52,9 @@ block append after_content
                     p
                         a.btn.btn-default.btn-block(href='/places/show/#{lastPlace.id}', role='button') See more
             .col-6.col-sm-6.col-lg-4.hei
-                h2
+
                 if lastArticle && lastArticle.name
+                    h2
                         i.fa.fa-quote-left
                         |  Last article
                     p.pgl.text-justify
