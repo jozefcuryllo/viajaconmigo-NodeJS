@@ -24,8 +24,9 @@ var storage = multer.diskStorage({
 var upload = multer({storage: storage});
 
 var isAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated())
+    if (req.isAuthenticated()) {
         return next();
+    }
 
     req.flash('error_messages', "Error: You've no permission to see this page. Please log-in.");
     res.redirect('/users/login');
@@ -37,11 +38,11 @@ router.get('/', function (req, res) {
     var lastPlace = null;
     var lastArticle = null;
 
-    Place.findOne({}, {}, {'created': -1}, function(err, post) {
+    Place.findOne({}, {}, {}, function(err, post) {
        lastPlace = post;
     });
 
-    Article.findOne({}, {}, {'created': -1}, function(err, post) {
+    Article.findOne({}, {}, {}, function(err, post) {
         lastArticle = post;
     });
 
@@ -51,7 +52,8 @@ router.get('/', function (req, res) {
             return console.error(err);
         }
 
-    }).sort({'created': -1})
+    })
+        .sort({'created': -1})
         .limit(50)
         .exec(function (err, places) {
             if (err) {
@@ -118,7 +120,19 @@ router.get('/show/:_id', function (req, res) {
                     return res.redirect('/places');
                 }
 
-                        res.render('places/show', {place: place, moment: moment});
+
+                Article.find({'_placeId': req.params._id}).exec(function (err, articles){
+                    if (err){
+                        console.log(err);
+                    }
+
+                    res.render('places/show', {
+                        place: place,
+                        moment: moment,
+                        articles: articles
+                    });
+
+                });
 
 
             });
@@ -196,7 +210,7 @@ router.get('/list', function (req, res) {
 
             var locations = [];
             for (var i=0; i<places.length - 1; i++ ){
-                var str = { link: '<a href=/places/' + places[i]._id + '>' + places[i].name  + '</a>', latitude:  places[i].latitude , longitude: places[i].longitude};
+                var str = { link: '<a href=/places/show/' + places[i]._id + '>' + places[i].name  + '', latitude:  places[i].latitude , longitude: places[i].longitude};
                 locations[i] = str;
             }
 

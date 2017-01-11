@@ -24,6 +24,10 @@ html
                     .collapse.navbar-collapse.navbar-menubuilder
                         ul.nav.navbar-nav.navbar-right
                             li
+                                a(href='/articles') Articles
+                            li
+                                a(href='/places/list') Places
+                            li
                                 a(href='/users/login') Login
                             li
                                 a(href='/users/register') Register
@@ -31,6 +35,8 @@ html
                 else
                     .collapse.navbar-collapse.navbar-menubuilder
                         ul.nav.navbar-nav.navbar-right
+                            li
+                                a(href='/articles') Articles
                             li.dropdown
                                 a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
                                     | Places

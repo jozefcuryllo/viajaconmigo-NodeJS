@@ -8,7 +8,7 @@ block prepend before_content
             for place in places
                 for image in place.images
                     .sp-slide
-                        img.sp-image(src='/public/slider-pro/dist/css/images/blank.gif',data-src='/uploads/#{image.filename}')
+                        img.sp-image(src='/public/slider-pro/dist/css/images/blank.gif',data-src='/uploads/#{image.filename}?dim=1600x1200')
                         p.sp-layer.sp-black.sp-padding(data-width='100%',data-position='bottomLeft')= place.name
 
 
@@ -30,7 +30,7 @@ block append content
             for place in places
                 for image in place.images
                     a.masonry-item(href='/places/show/' + place._id, title='#{place.name}')
-                        img(src='/uploads/#{image.filename}')
+                        img(src='/uploads/#{image.filename}?dim=200x100')
         .clearfix
 
 
@@ -40,7 +40,7 @@ block append after_content
         .row
             .col-6.col-sm-6.col-lg-4.hei
                 h2
-                if lastPlace
+                if lastPlace && lastPlace.name
                         i.fa.fa-music
                         |  Last place
                     p.pgl.text-justify
@@ -52,16 +52,16 @@ block append after_content
                         a.btn.btn-default.btn-block(href='/places/show/#{lastPlace.id}', role='button') See more
             .col-6.col-sm-6.col-lg-4.hei
                 h2
-                if lastArticle
+                if lastArticle && lastArticle.name
                         i.fa.fa-quote-left
                         |  Last article
                     p.pgl.text-justify
-                       // b #{lastArticle.name}
+                        b #{lastArticle.name}
                         br
-                       // | #{lastArticle.description}
+                        | #{lastArticle.description}
 
                     p
-                   //     a.btn.btn-default.btn-block(href='/articles/#{lastArticle.id}', role='button') See more
+                        a.btn.btn-default.btn-block(href='/articles/show/#{lastArticle.id}', role='button') See more
             .col-6.col-sm-6.col-lg-4.hei
                 h2
                     i.fa.fa-rss

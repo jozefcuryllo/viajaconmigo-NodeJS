@@ -5,25 +5,38 @@ block append css
 
 block append content
     .container
-        h1.page-header #{place.name}
-            a(href='/places/edit/' + place._id)
-                | &nbsp; [Edit]
-        p.text-justified #{place.description}
+        .col-md-8.col-xs-12.col-lg-9
+            h1.page-header #{place.name}
+                ="  "
+                a(href='/places/edit/' + place._id)
 
-        if (place.images && place.images.length > 0)
-            #my-slider.slider-pro
-                .sp-slides
-                    for image in place.images
-                        .sp-slide
-                            img.sp-image(src='/uploads/#{image.filename}')
-                            p.sp-layer.sp-black.sp-padding(data-width='100%',data-position='bottomLeft')= place.name
+                    i.fa.fa-pencil(aria-hidden='true')
+            p.text-justified #{place.description}
 
-            br
-            br
+            if (place.images && place.images.length > 0)
+                #my-slider.slider-pro
+                    .sp-slides
+                        for image in place.images
+                            .sp-slide
+                                img.sp-image(src='/uploads/#{image.filename}?dim=1600x1200')
+                                p.sp-layer.sp-black.sp-padding(data-width='100%',data-position='bottomLeft')= place.name
+
+
+        .col-md-4.col-xs-12.col-lg-3
+            .well
+                h3.page-header Articles
+                if articles
+                    for article in articles
+                        h3
+                            a(href='/articles/show/#{article._id}') #{article.name}
+                        p #{article.description}
+                    hr
+                a(href='/articles/add/#{place._id}') Add your own article
 
 block append after_content
 
     .container
+
         if (place.comments && place.comments.length > 0)
             for comment in place.comments
                 .comment-head2
@@ -43,6 +56,8 @@ block append after_content
                     button.btn.btn-success.green(type='submit')
                         i.fa.fa-share
                         |  Share
+
+
 
     #map
 

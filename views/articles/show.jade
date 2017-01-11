@@ -1,0 +1,10 @@
+extends ../layout
+
+block append content
+    .container
+        h2.page-header #{article.name}
+            ="  "
+            a(href='/places/show/#{article._placeId._id}',title='See this place')
+                i.fa.fa-share(aria-hidden='true')
+        p #{article.description}
+        p #{article.content}

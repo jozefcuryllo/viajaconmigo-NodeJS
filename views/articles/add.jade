@@ -8,7 +8,7 @@ block append content
         .panel.panel-default
             .panel-heading New Article
             .panel-body
-                form.form-horizontal(role='form', method='POST', enctype='multipart/form-data')
+                form.form-horizontal(role='form', method='POST')
                     .form-group
                         label.col-md-4.control-label(for='name') Name
                         .col-md-6
@@ -16,12 +16,12 @@ block append content
                     .form-group
                         label.col-md-4.control-label(for='description') Description
                         .col-md-6
-                            textarea.form-control(type='text', name='description', id='description', placeholder='Description')
+                            textarea.form-control(name='description', id='description', placeholder='Description', required='')
 
                     .form-group
                         label.col-md-4.control-label(for='content') Content
                         .col-md-6
-                            textarea.form-control(type='text', name='content', id='content', placeholder='Content')
+                            textarea.form-control(name='content', id='content', placeholder='Content', required='')
 
                     .form-group
                         .col-md-6.col-md-offset-4

@@ -6,39 +6,126 @@ var User = mongoose.model('User');
 var Place = mongoose.model('Place');
 var Article = mongoose.model('Article');
 
-router.get('/', function(req, res){
+var isAuthenticated = function (req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
 
-    Article.find({}).exec(function(err, articles){
-        if (err) {
-            req.flash('error_messages', "Error occured with searching for articles");
-            return res.redirect('/');
-        }
+    req.flash('error_messages', "Error: You've no permission to see this page. Please log-in.");
+    res.redirect('/users/login');
+};
 
-        res.render('articles/index', {
-            articles: articles
+router.get('/', function (req, res) {
+
+    Article.find({})
+        .populate('_placeId')
+        .exec(function (err, articles) {
+            if (err) {
+                req.flash('error_messages', "Error occured with searching for articles");
+                return res.redirect('/');
+            }
+
+            res.render('articles/index', {
+                articles: articles
+            });
         });
-    });
 
 });
 
-router.get('/add', function(req, res){
-    res.render('articles/add');
+router.get('/add/:_placeId', isAuthenticated, function (req, res) {
+    res.render('articles/add', {_placeId: req.params._placeId});
 });
 
-router.get('/edit/:_id', function(req, res){
-    Article.find({'_id': req.params._id}).exec(function(err, article){
+router.get('/edit/:_id', isAuthenticated, function (req, res) {
+    Article.find({'_id': req.params._id}, function(err, article){
+        if (err){
+            req.flash('error_messages', "Error occured with searching for articles");
+            console.log(err);
+            return res.redirect('/');
+        }
+    }).exec(function (err, article) {
         if (err) {
             req.flash('error_messages', "Error occured with searching for articles");
+            console.log(err);
             return res.redirect('/');
         }
 
-        res.render('articles/index', {
+        res.render('articles/edit', {
             article: article
         });
     });
 
 });
 
+router.post('/add/:_placeId', isAuthenticated, function (req, res) {
+    console.log(req.body);
+
+    var myArticle = new Article({
+        _id: mongoose.Types.ObjectId(),
+        name: req.body.name,
+        description: req.body.description,
+        content: req.body.content,
+        _userId: req.user._id,
+        _placeId: req.params._placeId,
+        created: new Date(),
+        modified: new Date()
+
+    });
+
+
+    myArticle.save(function (err, article) {
+        if (err) {
+            req.flash('error_messages', "Error occured with saving article. Try again!");
+            console.log(err);
+            return res.redirect('/articles');
+        }
+
+        req.flash('success_messages', "You article has been saved succesfully!");
+        return res.redirect('/articles');
+    });
+});
+
+router.post('/edit/:_placeId', isAuthenticated, function (req, res) {
+    var myArticle = new Article({
+        _id: req.body._id,
+        name: req.body.name,
+        description: req.body.description,
+        content: req.body.content,
+        _userId: req.user._id,
+        _placeId: req.params._placeId,
+        modified: new Date()
+
+    });
+
+
+    myArticle.save(function (err, article) {
+        if (err) {
+            req.flash('error_messages', "Error occured with saving article. Try again!");
+            return res.redirect('/articles');
+        }
+
+        req.flash('success_messages', "You article has been saved succesfully!");
+        return res.redirect('/articles');
+    });
+});
+
+router.get('/show/:_id', function (req, res){
+    Article.findOne({'_id': req.params._id})
+        .populate('_placeId')
+        .exec(function (err, article) {
+        if (err) {
+            req.flash('error_messages', "Error occured with searching for article");
+            console.log(err);
+            return res.redirect('/');
+        }
+
+        console.log(article);
+
+        res.render('articles/show', {
+            article: article
+        });
+    });
+});
 
 module.exports = passport;
 module.exports = router;

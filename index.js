@@ -11,6 +11,7 @@ var Strategy = require('passport-local').Strategy;
 var debug = require('express-debug');
 var breadcrumb = require('express-url-breadcrumb');
 var moment = require('moment');
+var  qt = require('quickthumb');
 
 // Connection URL
 var url = 'mongodb://jcuryllo:qwerty@ds147167.mlab.com:47167/ulpgcasw';
@@ -52,10 +53,6 @@ var placeSchema = mongoose.Schema({
         mimetype: String,
         created: Date
     }],
-    likes: [{
-        _userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-        type: Number // 0 - neutral, 1 - like, 2 - dislike
-    }],
     created: Date,
     modified: Date,
     articles: [{type: String, ref: 'Article'}],
@@ -64,12 +61,14 @@ var placeSchema = mongoose.Schema({
 var Place = mongoose.model('Place', placeSchema);
 
 var articleSchema = mongoose.Schema({
-    _userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    _id: {type: mongoose.Schema.Types.ObjectId},
+    _userId: {type: String, ref: 'User'},
     _placeId: {type: String, ref: 'Place'},
-    body: String,
+    name: String,
+    description: String,
+    content: String,
     created: Date,
-    modified: Date,
-    comments: [commentSchema]
+    modified: Date
 });
 var Article = mongoose.model('Article', articleSchema);
 
@@ -82,7 +81,7 @@ app.enable('trust proxy');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-app.use('/uploads', express.static(__dirname + "/uploads"));
+app.use('/uploads', qt.static(__dirname + "/uploads"));
 app.use('/public', express.static(__dirname + "/public"));
 var DepLinker = require('dep-linker');
 DepLinker.copyDependenciesTo('./public');
