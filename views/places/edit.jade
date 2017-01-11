@@ -1,40 +1,41 @@
 extends ../layout
 
 block append content
-    h2.page-header Select place on the map
+    .container
+        h2.page-header Select place on the map
 
-    #map
+        #map
 
-    h2.page-header Write details
+        h2.page-header Write details
 
-    .col-md-12
-        .panel.panel-default
-            .panel-heading Edit the place
-            .panel-body
-                form.form-horizontal(role='form', method='POST', enctype='multipart/form-data')
-                    .form-group
-                        label.col-md-4.control-label(for='name') Name
-                        .col-md-6
-                            input.form-control(type='text', name='name', id='name', value='#{place.name}', required='', autofocus='', placeholder='Name')
-                    .form-group
-                        label.col-md-4.control-label(for='description') Description
-                        .col-md-6
-                            textarea.form-control(type='text', name='description', id='description', placeholder='Description')
-                                | #{place.description}
-                    input(type='hidden', name='longitude', class='form-control', value='#{place.longitude}')
-                    input(type='hidden', name='latitude', class='form-control', value='#{place.latitude}')
-                    .form-group
-                        label.col-md-4.control-label(for='photos') Pictures
-                        .col-md-6
-                            input.form-control(type='file', name='photos', id='photos', multiple)
-                    .form-group
-                        .col-md-6.col-md-offset-4
-                            button.btn.btn-primary(type='submit')
-                                | Save
+        .col-md-12
+            .panel.panel-default
+                .panel-heading Edit the place
+                .panel-body
+                    form.form-horizontal(role='form', method='POST', enctype='multipart/form-data')
+                        .form-group
+                            label.col-md-4.control-label(for='name') Name
+                            .col-md-6
+                                input.form-control(type='text', name='name', id='name', value='#{place.name}', required='', autofocus='', placeholder='Name')
+                        .form-group
+                            label.col-md-4.control-label(for='description') Description
+                            .col-md-6
+                                textarea.form-control(type='text', name='description', id='description', placeholder='Description')
+                                    | #{place.description}
+                        input(type='hidden', name='longitude', class='form-control', value='#{place.longitude}')
+                        input(type='hidden', name='latitude', class='form-control', value='#{place.latitude}')
+                        .form-group
+                            label.col-md-4.control-label(for='photos') Pictures
+                            .col-md-6
+                                input.form-control(type='file', name='photos', id='photos', multiple)
+                        .form-group
+                            .col-md-6.col-md-offset-4
+                                button.btn.btn-primary(type='submit')
+                                    | Save
 
 
 
-block append javascript
+block append javascripts
     script.
         function initMap() {
             var uluru = {lat: #{place.latitude}, lng: #{place.longitude}};

@@ -118,8 +118,6 @@ router.get('/show/:_id', function (req, res) {
                     return res.redirect('/places');
                 }
 
-                    console.log(place.comments[0]._userId.name);
-
                         res.render('places/show', {place: place, moment: moment});
 
 
@@ -178,7 +176,12 @@ router.post('/edit/:_id', upload.any(), isAuthenticated, function (req, res) {
 
 });
 
+
 router.get('/list', function (req, res) {
+
+
+
+
     Place.find({}, function (err, places) {
         if (err) {
             return console.error(err);
@@ -191,7 +194,23 @@ router.get('/list', function (req, res) {
                 return console.error(err);
             }
 
-            res.render('places/list', {places: places});
+            var locations = [];
+            for (var i=0; i<places.length - 1; i++ ){
+                var str = { link: '<a href=/places/' + places[i]._id + '>' + places[i].name  + '</a>', latitude:  places[i].latitude , longitude: places[i].longitude};
+                locations[i] = str;
+            }
+
+            var geoip = require('geoip-lite');
+            var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+            var geo = geoip.lookup(req.ip);
+
+
+
+            res.render('places/list', {
+                places: places,
+                locations: JSON.stringify(locations),
+                geo: geo
+            });
         });
 });
 
@@ -228,6 +247,18 @@ router.post('/show/:_id', isAuthenticated, function (req, res) {
             });
 
         });
+});
+
+router.get('/search-places/:name', function(req, res){
+   Place.find({'name': new RegExp(req.params.name, 'i')}, 'name').exec(function(err, places){
+       if (err){
+           return res.json(err);
+       }
+
+
+
+       return res.json(places);
+   });
 });
 
 module.exports = upload;

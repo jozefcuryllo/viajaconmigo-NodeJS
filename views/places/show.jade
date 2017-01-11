@@ -28,9 +28,9 @@ block append after_content
         if (place.comments && place.comments.length > 0)
             for comment in place.comments
                 .comment-head2
-                    | #{comment._userId.name}
+                    | #{comment._userId.name} at
                     script
-                        | document.write(moment('#{comment.created}').format('YYYY-MM-DD HH:mm'));
+                        |  document.write(' ' + moment('#{comment.created}').format('YYYY-MM-DD HH:mm'));
                 .comment-body
                     | #{comment.content}
 

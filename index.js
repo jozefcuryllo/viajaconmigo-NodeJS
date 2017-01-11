@@ -77,7 +77,7 @@ var Article = mongoose.model('Article', articleSchema);
 app.use(session({secret: 'keyboard cat', cookie: {maxAge: 600000, _expires: 60000000}}));
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.enable('trust proxy');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
