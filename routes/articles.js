@@ -127,5 +127,10 @@ router.get('/show/:_id', function (req, res){
     });
 });
 
+router.get('/show', function(req, res){
+    return res.redirect('/articles');
+});
+
+
 module.exports = passport;
 module.exports = router;

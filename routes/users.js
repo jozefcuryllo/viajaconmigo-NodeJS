@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var User = require('mongoose').model('User');
+var bcrypt = require('bcrypt');
+
 
 router.get('/register',
     function (req, res) {
@@ -20,6 +22,7 @@ router.post('/register',
         });
 
         if (req.body.password == req.body.repassword) {
+            myUser.password = bcrypt.hashSync(myUser.password, 10);
             myUser.save(function (err) {
                 if (!err) {
                     req.flash('success_messages', "User has been saved! You can log in using your credentials.");

@@ -12,7 +12,7 @@ var debug = require('express-debug');
 var breadcrumb = require('express-url-breadcrumb');
 var moment = require('moment');
 var  qt = require('quickthumb');
-
+var bcrypt = require('bcrypt');
 // Connection URL
 var url = 'mongodb://jcuryllo:qwerty@ds147167.mlab.com:47167/ulpgcasw';
 var mongoose = require('mongoose');
@@ -24,7 +24,7 @@ var port = process.env.PORT || 3000;
 
 
 var userSchema = mongoose.Schema({
-    name: {type: String, unique: true, required: true},
+    name: {type: String, required: true},
     password: {type: String, required: true},
     email: {type: String, unique: true, required: true},
     created: Date,
@@ -126,11 +126,8 @@ passport.use(new Strategy(
                 console.log("User does not exist!");
                 return cb(null, false);
             }
-            if (user.password !== password) {
+            if (!bcrypt.compareSync(password, user.password)) {
                 console.log("Password is incorrect!");
-                console.log("Password: " + user.password);
-                console.log("Password: " + password);
-                console.log("User: " + JSON.stringify(user));
                 return cb(null, false);
             }
             console.log("Logged in");

@@ -275,5 +275,9 @@ router.get('/search-places/:name', function(req, res){
    });
 });
 
+router.get('/show', function(req, res){
+    return res.redirect('/places/list');
+});
+
 module.exports = upload;
 module.exports = router;
