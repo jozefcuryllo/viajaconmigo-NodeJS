@@ -49,6 +49,7 @@ router.get('/', function (req, res) {
 
     Place.find()
         .limit(3)
+        .lean()
         .exec(function(err, places){
             if (err) {
                 return console.error(err);
@@ -65,6 +66,7 @@ router.get('/', function (req, res) {
     })
         .sort({'created': -1})
         .limit(50)
+        .lean()
         .exec(function (err, places) {
             if (err) {
                 return console.error(err);

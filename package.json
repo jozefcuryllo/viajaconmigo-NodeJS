@@ -25,6 +25,7 @@
     "jade": "^1.11.0",
     "mongodb": "^2.2.11",
     "mongoose": "^4.6.6",
+    "mongoose-redis-cache": "0.0.3",
     "morgan": "^1.7.0",
     "multer": "^1.2.0",
     "passport": "^0.3.2",

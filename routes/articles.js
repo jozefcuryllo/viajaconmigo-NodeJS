@@ -19,6 +19,7 @@ router.get('/', function (req, res) {
 
     Article.find()
         .populate('_placeId')
+        .lean()
         .exec(function (err, articles) {
             if (err) {
                 req.flash('error_messages', "Error occured with searching for articles");

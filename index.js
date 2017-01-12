@@ -13,11 +13,18 @@ var breadcrumb = require('express-url-breadcrumb');
 var moment = require('moment');
 var  qt = require('quickthumb');
 var bcrypt = require('bcrypt');
-// Connection URL
+var mongooseRedisCache = require("mongoose-redis-cache");
+
+// Databases
 var url = 'mongodb://jcuryllo:qwerty@ds147167.mlab.com:47167/ulpgcasw';
 var mongoose = require('mongoose');
 mongoose.connect(url);
-
+mongooseRedisCache(mongoose, {
+    host: "50.30.35.9",
+    port: "3301",
+    pass: "2228bd19c8bce98d61009023d6c13fe1",
+    options: ""
+});
 
 var app = express();
 var port = process.env.PORT || 3000;
@@ -31,6 +38,7 @@ var userSchema = mongoose.Schema({
     created: Date,
     modified: Date
 });
+userSchema.set('redisCache', true);
 
 var User = mongoose.model('User', userSchema);
 
@@ -41,7 +49,9 @@ var commentSchema = mongoose.Schema({
     modified: Date
 
 });
+commentSchema.set('redisCache', true);
 var Comment = mongoose.model('Comment', commentSchema);
+
 var placeSchema = mongoose.Schema({
     _id: {type: String},
     name: String,
@@ -59,6 +69,7 @@ var placeSchema = mongoose.Schema({
     articles: [{type: String, ref: 'Article'}],
     comments: [commentSchema]
 });
+placeSchema.set('redisCache', true);
 var Place = mongoose.model('Place', placeSchema);
 
 var articleSchema = mongoose.Schema({
@@ -71,6 +82,7 @@ var articleSchema = mongoose.Schema({
     created: Date,
     modified: Date
 });
+articleSchema.set('redisCache', true);
 var Article = mongoose.model('Article', articleSchema);
 
 
